@@ -1,0 +1,40 @@
+version: '3.4'
+
+services:
+  commentsapi:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ConnectionStrings__MsSqlDbSettings=Server=mssql_db_comment;Database=db_comment;User Id=sa;Password=zaq1@WSX;TrustServerCertificate=true
+    ports:
+      - "5000:80"
+      - "5001:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+  
+  
+  reviewsapi:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ConnectionStrings__MsSqlDbSettings=Server=mssql_db_review;Database=db_review;User Id=sa;Password=zaq1@WSX;TrustServerCertificate=true
+    ports:
+      - "5002:80"
+      - "5003:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+
+  authapi:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ConnectionStrings__MsSqlDbSettings=Server=mssql_db_auth;Database=db_auth;User Id=sa;Password=zaq1@WSX;TrustServerCertificate=true
+    ports:
+      - "5004:80"
+      - "5005:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
