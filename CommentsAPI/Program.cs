@@ -3,6 +3,7 @@ using CommentsAPI.AsyncDataService;
 using CommentsAPI.EventProcessing;
 using CommentsAPI.Services;
 using Core.Configuration;
+using Core.Entities.Models;
 using Core.Repositories;
 using Core.Services;
 using Infrastructure.Configuration;
@@ -46,6 +47,9 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    
+    // Seed database
+    SeedDatabase<Comment>.Seed(app);
 }
 
 app.UseHttpsRedirection();

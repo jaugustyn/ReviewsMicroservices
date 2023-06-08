@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using AuthAPI.AsyncDataService;
 using AuthAPI.Services;
 using Core.Configuration;
+using Core.Entities.Models;
 using Core.Repositories;
 using Core.Services;
 using Infrastructure.Configuration;
@@ -50,6 +51,9 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    
+    // Seed database
+    SeedDatabase<User>.Seed(app);
 }
 
 app.UseHttpsRedirection();
