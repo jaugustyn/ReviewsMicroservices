@@ -57,7 +57,7 @@ public class ReviewControllerTests
 
     #endregion
 
-    #region ReviewReview tests
+    #region PostReview tests
 
     [Fact]
     public async Task Review_ValidData_ReturnsCreatedAtAction()
@@ -202,7 +202,7 @@ public class ReviewControllerTests
 
     #endregion
 
-    #region DeletReview tests
+    #region DeleteReview tests
 
     [Fact]
     public async Task DeleteReview_ValidId_ReturnsNoContent()

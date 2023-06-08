@@ -38,7 +38,7 @@ public class UserService : IUserService
             Role = Role.User,
             PasswordHash = hash,
             PasswordSalt = Convert.ToHexString(salt),
-            CreatedDate = DateTimeOffset.UtcNow
+            CreatedAt = DateTimeOffset.UtcNow
         };
 
         await _userRepository.CreateAsync(user);
@@ -59,7 +59,7 @@ public class UserService : IUserService
             PasswordSalt = oldUserData.PasswordSalt,
             FirstName = entity.FirstName,
             LastName = entity.LastName,
-            CreatedDate = oldUserData.CreatedDate
+            CreatedAt = oldUserData.CreatedAt
         };
 
         await _userRepository.UpdateAsync(id, user);
@@ -82,7 +82,7 @@ public class UserService : IUserService
             PasswordSalt = Convert.ToHexString(salt),
             FirstName = oldUserData.FirstName,
             LastName = oldUserData.LastName,
-            CreatedDate = oldUserData.CreatedDate
+            CreatedAt = oldUserData.CreatedAt
         };
 
         await _userRepository.UpdateAsync(id, user);
@@ -103,7 +103,7 @@ public class UserService : IUserService
             PasswordSalt = oldUserData.PasswordSalt,
             FirstName = oldUserData.FirstName,
             LastName = oldUserData.LastName,
-            CreatedDate = oldUserData.CreatedDate
+            CreatedAt = oldUserData.CreatedAt
         };
 
         await _userRepository.UpdateAsync(id, user);

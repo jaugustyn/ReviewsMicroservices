@@ -29,7 +29,7 @@ public class TokenRepository: ITokenRepository
 
     public async Task<RefreshToken> GetByUserIdAsync(Guid id)
     {
-        var filter = _filterBuilder.Eq(x => x.UserId, id) & _filterBuilder.Eq(x => x.IsActive, true);
+        var filter = _filterBuilder.Eq(x => x.UserId, id) & _filterBuilder.Eq(x => x.RevokedAt, null) & _filterBuilder.Gte(x => x.Expires, DateTimeOffset.Now.AddHours(1));
         return await _collection.Find(filter).FirstOrDefaultAsync();
     }
 

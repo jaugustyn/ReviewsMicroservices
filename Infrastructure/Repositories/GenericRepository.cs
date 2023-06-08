@@ -15,7 +15,6 @@ public abstract class GenericRepository<T> : IGenericRepository<T> where T : cla
     protected GenericRepository(IMongoDbContext mongoContext)
     {
         _mongoContext = mongoContext;
-        // _collection = mongoContext.GetCollection<T>(typeof(T).Name); // Non-plural name
         _collection = SetupCollection();
     }
 

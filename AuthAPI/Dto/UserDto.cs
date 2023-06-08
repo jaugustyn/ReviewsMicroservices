@@ -25,7 +25,7 @@ public class UserDto
             FirstName = user.FirstName,
             LastName = user.LastName,
             Birthday = user.Birthday,
-            CreatedDate = user.CreatedDate
+            CreatedDate = user.CreatedAt
         };
     }
 }

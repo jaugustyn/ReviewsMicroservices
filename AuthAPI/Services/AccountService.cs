@@ -34,15 +34,11 @@ public class AccountService : IAccountService
             return authModel;
         }
 
-        ;
-
         if (!Verify(userLoginDto.Password, user))
         {
             authModel.Message = "Incorrect credentials.";
             return authModel;
         }
-
-        ;
 
         var token = _jwtAuthService.GenerateAccessToken(user);
 
@@ -52,11 +48,11 @@ public class AccountService : IAccountService
         authModel.Email = user.Email;
         authModel.Role = user.Role;
 
-        if (user.RefreshTokens.Any(a => a.IsActive))
+        var anyActiveToken = await _tokenRepository.GetByUserIdAsync(user.Id);
+        if (anyActiveToken is not null && anyActiveToken.Expires >= DateTimeOffset.Now.AddHours(1))
         {
-            var activeRefreshToken = user.RefreshTokens.FirstOrDefault(a => a.IsActive)!;
-            authModel.RefreshToken = activeRefreshToken.Token;
-            authModel.RefreshTokenExpiration = activeRefreshToken.Expires;
+            authModel.RefreshToken = anyActiveToken.Token;
+            authModel.RefreshTokenExpiration = anyActiveToken.Expires;
         }
         else
         {
@@ -64,8 +60,7 @@ public class AccountService : IAccountService
             authModel.RefreshToken = refreshToken.Token;
             authModel.RefreshTokenExpiration = refreshToken.Expires;
 
-            var newToken = await _tokenRepository.AddTokenAsync(refreshToken);
-            user.RefreshTokens.Add(newToken);
+            _ = await _tokenRepository.AddTokenAsync(refreshToken);
         }
 
         return authModel;
@@ -122,12 +117,11 @@ public class AccountService : IAccountService
         }
 
         //Revoke current refresh token
-        refreshToken.RevokedDate = DateTime.UtcNow;
+        refreshToken.RevokedAt = DateTime.UtcNow;
         await _tokenRepository.UpdateTokenAsync(refreshToken);
         var newRefreshToken = _jwtAuthService.GenerateRefreshToken(user);
 
         var newToken = await _tokenRepository.AddTokenAsync(newRefreshToken);
-        user.RefreshTokens.Add(newToken);
 
         // Generate new jwt
         authModel.IsAuthenticated = true;
@@ -147,7 +141,7 @@ public class AccountService : IAccountService
         if (refreshToken is null) return false;
         if (!refreshToken.IsActive) return false;
 
-        refreshToken.RevokedDate = DateTime.UtcNow;
+        refreshToken.RevokedAt = DateTime.UtcNow;
         await _tokenRepository.UpdateTokenAsync(refreshToken);
 
         return true;

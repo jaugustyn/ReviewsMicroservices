@@ -51,7 +51,7 @@ public class CommentService : ICommentService
             Text = entity.Text,
             UserId = userId,
             ReviewId = entity.ReviewId,
-            CreatedDate = DateTimeOffset.UtcNow
+            CreatedAt = DateTimeOffset.UtcNow
         };
 
         await _commentRepository.CreateAsync(comment);
@@ -68,7 +68,7 @@ public class CommentService : ICommentService
             Id = oldComment.Id,
             Text = entity.Text,
             UserId = oldComment.UserId,
-            CreatedDate = oldComment.CreatedDate,
+            CreatedAt = oldComment.CreatedAt,
             ReviewId = oldComment.ReviewId
         };
 

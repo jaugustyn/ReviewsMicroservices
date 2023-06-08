@@ -13,20 +13,6 @@ namespace Core.Configuration;
 
 public static class Configure
 {
-    public static void ConfigureCors(this IServiceCollection services)
-    {
-        services.AddCors(options =>
-        {
-            options.AddPolicy(
-                "CorsPolicy",
-                builder =>
-                    builder
-                        .AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader());
-        });
-    }
-
     public static void ConfigureJwt(this IServiceCollection services, JwtSettings jwtSettings)
     {
         services.AddAuthorization(opt =>
@@ -35,9 +21,14 @@ public static class Configure
                 .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
                 .RequireAuthenticatedUser()
                 .Build());
-            opt.AddPolicy("Email", policy => { policy.RequireClaim("email"); });
-            opt.AddPolicy("IsAdmin",
-                policy => { policy.RequireRole(Enum.GetName(Role.Administrator) ?? string.Empty); });
+            opt.AddPolicy("Email", policy =>
+            {
+                policy.RequireClaim("email");
+            });
+            opt.AddPolicy("IsAdmin", policy =>
+            {
+                policy.RequireRole(Enum.GetName(Role.Administrator) ?? string.Empty);
+            });
         });
 
         services
@@ -90,6 +81,20 @@ public static class Configure
                 };
             });
     }
+    public static void ConfigureCors(this IServiceCollection services)
+    {
+        services.AddCors(options =>
+        {
+            options.AddPolicy(
+                "CorsPolicy",
+                builder =>
+                    builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+        });
+    }
+
 
     public static void ConfigureSwagger(this IServiceCollection services)
     {

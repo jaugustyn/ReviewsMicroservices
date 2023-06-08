@@ -14,7 +14,6 @@ namespace AuthAPI.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IAccountService _accountService;
-
     private readonly IUserService _userService;
     private readonly IMessageBusAuthClient _messageBusClient;
 
@@ -29,11 +28,13 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] UserLoginDto dto)
     {
-        if (!ModelState.IsValid) return BadRequest(ModelState);
+        if (!ModelState.IsValid) 
+            return BadRequest(ModelState);
 
         var loginResult = await _accountService.Login(dto);
 
-        if (!loginResult.IsAuthenticated) return Unauthorized(new {error_message = loginResult.Message});
+        if (!loginResult.IsAuthenticated) 
+            return Unauthorized(new MessageResponse(errorMessage:loginResult.Message));
 
         return Ok(loginResult);
     }
@@ -42,11 +43,13 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] UserCreateDto user)
     {
-        if (!ModelState.IsValid) return BadRequest(ModelState);
+        if (!ModelState.IsValid) 
+            return BadRequest(ModelState);
 
         var newUser = await _accountService.Register(user);
 
-        if (newUser is null) return Conflict(new {error_message = "Email is already in use."});
+        if (newUser is null) 
+            return Conflict(new MessageResponse(errorMessage:"Email is already in use."));
 
         return Ok(newUser);
     }
@@ -55,11 +58,13 @@ public class AuthController : ControllerBase
     [Route("token/refresh")]
     public async Task<IActionResult> Refresh(TokenRequestModel token)
     {
-        if (token is null) return BadRequest(new {error_message = "Invalid client request"});
+        if (token is null) 
+            return BadRequest(new MessageResponse(errorMessage:"Invalid client request"));
 
         var refreshResult = await _accountService.RefreshToken(token);
 
-        if (refreshResult is null) return BadRequest(new {error_message = refreshResult.Message});
+        if (refreshResult is null) 
+            return BadRequest(new MessageResponse(errorMessage: refreshResult.Message));
 
         return Ok(refreshResult);
     }
@@ -71,9 +76,10 @@ public class AuthController : ControllerBase
     {
         var isRevoked = await _accountService.RevokeToken(token);
 
-        if (!isRevoked) return BadRequest(new {error_message = "Token expired."});
+        if (!isRevoked) 
+            return BadRequest(new MessageResponse(errorMessage:"Token expired."));
 
-        return Ok(new {message = "Token revoked."});
+        return Ok(new MessageResponse(errorMessage: "Token revoked."));
     }
 
     [HttpGet("currentUser")]
@@ -93,13 +99,16 @@ public class AuthController : ControllerBase
     {
         var user = await _userService.GetUserByEmailAsync(email);
 
-        if (user is null) return NotFound(new {error_message = "User does not exist"});
+        if (user is null) 
+            return NotFound(new MessageResponse(errorMessage:"User does not exist"));
 
         if (!Enum.IsDefined(typeof(Role), role))
-            return BadRequest(new {error_message = $"Role '{role}' does not exist"});
+            return BadRequest(new MessageResponse(errorMessage: $"Role '{role}' does not exist"));
 
         var changed = await _userService.ChangeRole(user.Id, role);
-        if (changed is null) return Conflict(new {error_message = "Cannot change the role."});
+        
+        if (changed is null) 
+            return Conflict(new MessageResponse(errorMessage:"Cannot change the role."));
 
         return Ok(changed);
     }

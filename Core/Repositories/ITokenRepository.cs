@@ -6,7 +6,7 @@ public interface ITokenRepository
 {
     Task<RefreshToken> GetByIdAsync(Guid id);
     Task<RefreshToken> GetByTokenAsync(string token);
-    Task<RefreshToken> GetByUserIdAsync(Guid id);
+    Task<RefreshToken> GetByUserIdAsync(Guid userId);
     Task<RefreshToken> AddTokenAsync(RefreshToken token);
     Task UpdateTokenAsync(RefreshToken token);
 }

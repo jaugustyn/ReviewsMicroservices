@@ -16,7 +16,7 @@ public class ReviewDto : ReviewCreateDto, IEntityBase
             Title = review.Title,
             Text = review.Text,
             UserId = review.UserId,
-            CreatedDate = review.CreatedDate
+            CreatedDate = review.CreatedAt
         };
     }
 }

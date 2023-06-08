@@ -67,7 +67,7 @@ public class CommentControllerTests
         var existingPost = new Review
         {
             Id = postId, Title = "Test Post", Text = "Test Post Content", UserId = Guid.NewGuid(),
-            CreatedDate = DateTimeOffset.Now
+            CreatedAt = DateTimeOffset.Now
         };
         
         // _postContextMock.Setup(context => context.GetByIdAsync(postId)).ReturnsAsync(existingPost);

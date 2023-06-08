@@ -11,23 +11,26 @@ namespace Core.Services;
 public class JwtService : IJwtService
 {
     private readonly IConfiguration _config;
+    private readonly byte[] _secretKeyBytes;
 
     public JwtService(IConfiguration config)
     {
         _config = config;
+        _secretKeyBytes = Encoding.UTF8.GetBytes(_config["JwtSettings:Secret"]);
     }
 
     public string GenerateAccessToken(User user)
     {
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JwtSettings:Secret"]));
+        var securityKey = new SymmetricSecurityKey(_secretKeyBytes);
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-        var expirationTimeStamp = DateTime.Now.AddMinutes(15);
+        var expirationTimeStamp = DateTime.Now.AddMinutes(30);
 
         var claims = new[]
         {
+            new Claim(JwtRegisteredClaimNames.UniqueName, user.Username),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
             new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
-            new Claim(ClaimTypes.Role, Enum.GetName(user.Role))
+            new Claim(ClaimTypes.Role, Enum.GetName(user.Role)!)
         };
 
         var token = new JwtSecurityToken(
@@ -55,41 +58,13 @@ public class JwtService : IJwtService
                 UserId = user.Id,
                 Token = Convert.ToBase64String(randomNumber),
                 Expires = DateTime.UtcNow.AddDays(10),
-                CreatedDate = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow
             };
         }
     }
 
-    public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
-    {
-        var key = Encoding.UTF8.GetBytes(_config["JwtSettings:Secret"]);
-
-        var tokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = false,
-            ValidateAudience = false,
-            ValidateLifetime = false,
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(key),
-            ClockSkew = TimeSpan.Zero
-        };
-
-        var tokenHandler = new JwtSecurityTokenHandler();
-        SecurityToken securityToken;
-        var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
-        var jwtSecurityToken = securityToken as JwtSecurityToken;
-
-        if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256,
-                StringComparison.InvariantCultureIgnoreCase))
-            throw new SecurityTokenException("Invalid token");
-
-        return principal;
-    }
-
     public bool Verify(string token)
     {
-        var key = Encoding.UTF8.GetBytes(_config["JwtSettings:Secret"]);
-
         var tokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
@@ -98,18 +73,18 @@ public class JwtService : IJwtService
             ValidateIssuerSigningKey = true,
             ValidIssuer = _config["JwtSettings:Issuer"],
             ValidAudience = _config["JwtSettings:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(key),
+            IssuerSigningKey = new SymmetricSecurityKey(_secretKeyBytes),
             ClockSkew = TimeSpan.FromSeconds(60)
         };
 
         var tokenHandler = new JwtSecurityTokenHandler();
-
         SecurityToken validatedToken;
+        
         try
         {
             tokenHandler.ValidateToken(token, tokenValidationParameters, out validatedToken);
         }
-        catch (Exception)
+        catch (SecurityTokenException)
         {
             return false;
         }

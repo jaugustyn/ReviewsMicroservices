@@ -16,7 +16,7 @@ public class CommentDto : IEntityBase
         {
             Id = comment.Id,
             Text = comment.Text,
-            CreatedDate = comment.CreatedDate,
+            CreatedDate = comment.CreatedAt,
             ReviewId = comment.ReviewId,
             UserId = comment.UserId
         };
