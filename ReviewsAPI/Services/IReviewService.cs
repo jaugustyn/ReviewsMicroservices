@@ -11,4 +11,6 @@ public interface IReviewService
     Task<ReviewDto> CreateAsync(Guid userId, ReviewCreateDto entity);
     Task UpdateAsync(Guid reviewId, ReviewUpdateDto entity);
     Task DeleteAsync(Guid id);
+    
+    Task<IEnumerable<ReviewDto>> SearchAsync(string keyPhrase);
 }

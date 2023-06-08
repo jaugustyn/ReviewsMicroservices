@@ -54,7 +54,7 @@ public class ReviewService : IReviewService
             Title = entity.Title,
             Text = entity.Text,
             UserId = userId,
-            CreatedDate = DateTimeOffset.UtcNow
+            CreatedAt = DateTimeOffset.UtcNow
         };
 
         await _reviewRepository.CreateAsync(review);
@@ -72,7 +72,7 @@ public class ReviewService : IReviewService
             Title = entity.Title,
             Text = entity.Text,
             UserId = oldReview.UserId,
-            CreatedDate = oldReview.CreatedDate
+            CreatedAt = oldReview.CreatedDate
         };
 
         await _reviewRepository.UpdateAsync(reviewId, review);
@@ -81,5 +81,19 @@ public class ReviewService : IReviewService
     public async Task DeleteAsync(Guid id)
     {
         await _reviewRepository.DeleteAsync(id);
+    }
+    
+    public async Task<IEnumerable<ReviewDto>> SearchAsync(string keyPhrase)
+    {
+        var reviews = await GetAllAsync();
+        IQueryable<ReviewDto>? query = null;
+        
+        if (!string.IsNullOrWhiteSpace(keyPhrase))
+        {
+            keyPhrase = keyPhrase.ToLower();
+            query = reviews.AsQueryable().Where(x => x.Title.ToLower().Contains(keyPhrase)).OrderBy(x => x.CreatedDate);
+        }
+
+        return query;
     }
 }
