@@ -26,6 +26,19 @@ public class ReviewsController : ControllerBase
     {
         return Ok(await _reviewService.GetAllAsync());
     }
+    
+    [HttpGet("{search}")]
+    public async Task<ActionResult<IEnumerable<ReviewDto>>> SearchReviews(string search)
+    {
+        var result = await _reviewService.SearchAsync(search);
+
+        if (result.Any())
+        {
+            return Ok(result);
+        }
+
+        return NotFound();
+    }
 
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<ReviewDto>> GetReview(Guid id)
@@ -55,7 +68,7 @@ public class ReviewsController : ControllerBase
         var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
         var newReview = await _reviewService.CreateAsync(userId, reviewCreateDto);
-
+        
         return CreatedAtAction(nameof(GetReview), new {id = newReview.Id}, newReview);
     }
 
@@ -69,6 +82,7 @@ public class ReviewsController : ControllerBase
         var review = await _reviewService.GetByIdAsync(id);
 
         if (review is null) return NotFound();
+        
         if (!review.UserId.Equals(userId) && role != "Administrator")
             return Unauthorized(new {error_message = "The review does not belong to this user"});
 
