@@ -74,7 +74,7 @@ public class AuthControllerTests
     {
         // Arrange
         var userLoginDto = new UserLoginDto {Email = "test@example.com", Password = "password"};
-        var loginResult = new UserAuthResponse {IsAuthenticated = true, Message = "Login successful"};
+        var loginResult = new AuthResponse {IsAuthenticated = true, Message = "Login successful"};
 
         _accountServiceMock.Setup(service => service.Login(userLoginDto)).ReturnsAsync(loginResult);
 
@@ -83,7 +83,7 @@ public class AuthControllerTests
 
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(result);
-        var returnedResult = Assert.IsAssignableFrom<UserAuthResponse>(okResult.Value);
+        var returnedResult = Assert.IsAssignableFrom<AuthResponse>(okResult.Value);
 
         Assert.Equal(loginResult, returnedResult);
     }
@@ -93,7 +93,7 @@ public class AuthControllerTests
     {
         // Arrange
         var userLoginDto = new UserLoginDto {Email = "test@example.com", Password = "invalidpassword"};
-        var loginResult = new UserAuthResponse {IsAuthenticated = false, Message = "Invalid credentials"};
+        var loginResult = new AuthResponse {IsAuthenticated = false, Message = "Invalid credentials"};
 
         _accountServiceMock.Setup(service => service.Login(userLoginDto)).ReturnsAsync(loginResult);
 

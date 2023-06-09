@@ -23,10 +23,10 @@ public class AccountService : IAccountService
         _tokenRepository = tokenRepository;
     }
 
-    public async Task<UserAuthResponse> Login(UserLoginDto userLoginDto)
+    public async Task<AuthResponse> Login(UserLoginDto userLoginDto)
     {
         var user = await _userRepository.GetUserByEmailAsync(userLoginDto.Email);
-        var authModel = new UserAuthResponse {IsAuthenticated = false};
+        var authModel = new AuthResponse {IsAuthenticated = false};
 
         if (user == null)
         {
@@ -90,9 +90,9 @@ public class AccountService : IAccountService
         return result;
     }
 
-    public async Task<UserAuthResponse> RefreshToken(TokenRequestModel tokenRequestModel)
+    public async Task<AuthResponse> RefreshToken(TokenRequestModel tokenRequestModel)
     {
-        var authModel = new UserAuthResponse {IsAuthenticated = false};
+        var authModel = new AuthResponse {IsAuthenticated = false};
 
         var refreshToken = await _tokenRepository.GetByTokenAsync(tokenRequestModel.RefreshToken);
 

@@ -3,7 +3,7 @@ using Core.Enums;
 
 namespace AuthAPI.Dto;
 
-public class UserAuthResponse
+public class AuthResponse
 {
     public string Email { get; set; }
     public bool IsAuthenticated { get; set; }

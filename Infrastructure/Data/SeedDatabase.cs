@@ -47,20 +47,26 @@ public static class SeedDatabase<T> where T: class, IEntityBase
     }
     private static void SeedUsers(IMongoCollection<User> collection)
     {
-        var itemsNum = collection.EstimatedDocumentCount();
-        if (itemsNum < 1) collection.InsertMany(GetSeedUsers());
+        if (!collection.AsQueryable().Any())
+        {
+            collection.InsertMany(GetSeedUsers());
+        }
     }
 
     private static void SeedReviews(IMongoCollection<Review> collection)
     {
-        var itemsNum = collection.EstimatedDocumentCount();
-        if (itemsNum < 1) collection.InsertMany(GetSeedReviews());
+        if (!collection.AsQueryable().Any())
+        {
+            collection.InsertMany(GetSeedReviews());
+        }
     }
 
     private static void SeedComments(IMongoCollection<Comment> collection)
     {
-        var itemsNum = collection.EstimatedDocumentCount();
-        if (itemsNum < 1) collection.InsertMany(GetSeedComments());
+        if (!collection.AsQueryable().Any())
+        {
+            collection.InsertMany(GetSeedComments());
+        }
     }
 
     private static IEnumerable<Comment> GetSeedComments()
