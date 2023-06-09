@@ -1,6 +1,6 @@
 ﻿using CommentsAPI.Dto.Comment;
 using Core.Entities.Models;
-using Core.Repositories;
+using Core.Interfaces.Repositories;
 
 namespace CommentsAPI.Services;
 

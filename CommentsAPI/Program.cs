@@ -4,11 +4,12 @@ using CommentsAPI.EventProcessing;
 using CommentsAPI.Services;
 using Core.Configuration;
 using Core.Entities.Models;
-using Core.Repositories;
-using Core.Services;
+using Core.Interfaces.Repositories;
+using Core.Interfaces.Services;
 using Infrastructure.Configuration;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
+using Services.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

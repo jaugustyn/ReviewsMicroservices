@@ -1,4 +1,4 @@
-﻿namespace Core.Enums;
+﻿namespace Core.Enumerations;
 
 public enum Role
 {

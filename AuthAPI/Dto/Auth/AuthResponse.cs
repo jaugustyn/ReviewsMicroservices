@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
-using Core.Enums;
+using Core.Enumerations;
 
-namespace AuthAPI.Dto;
+namespace AuthAPI.Dto.Auth;
 
 public class AuthResponse
 {

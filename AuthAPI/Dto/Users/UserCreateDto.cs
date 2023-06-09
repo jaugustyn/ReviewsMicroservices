@@ -1,4 +1,4 @@
-﻿namespace AuthAPI.Dto;
+﻿namespace AuthAPI.Dto.Users;
 
 public class UserCreateDto
 {

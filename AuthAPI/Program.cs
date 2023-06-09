@@ -1,13 +1,15 @@
 using System.Text.Json.Serialization;
 using AuthAPI.AsyncDataService;
 using AuthAPI.Services;
+using AuthAPI.Services.Interfaces;
 using Core.Configuration;
 using Core.Entities.Models;
-using Core.Repositories;
-using Core.Services;
+using Core.Interfaces.Repositories;
+using Core.Interfaces.Services;
 using Infrastructure.Configuration;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
+using Services.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

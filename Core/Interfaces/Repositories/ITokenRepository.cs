@@ -1,6 +1,6 @@
 ﻿using Core.Entities.Models;
 
-namespace Core.Repositories;
+namespace Core.Interfaces.Repositories;
 
 public interface ITokenRepository
 {

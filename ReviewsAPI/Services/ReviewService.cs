@@ -1,5 +1,5 @@
 ﻿using Core.Entities.Models;
-using Core.Repositories;
+using Core.Interfaces.Repositories;
 using ReviewsAPI.Dto.Review;
 
 namespace ReviewsAPI.Services;

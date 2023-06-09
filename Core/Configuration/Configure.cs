@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using System.Text;
-using Core.Enums;
+using Core.Enumerations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

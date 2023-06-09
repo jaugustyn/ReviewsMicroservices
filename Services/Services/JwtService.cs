@@ -3,10 +3,11 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using Core.Entities.Models;
+using Core.Interfaces.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Core.Services;
+namespace Services.Services;
 
 public class JwtService : IJwtService
 {

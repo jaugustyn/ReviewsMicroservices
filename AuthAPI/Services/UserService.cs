@@ -1,8 +1,10 @@
 ﻿using AuthAPI.Dto;
+using AuthAPI.Dto.Users;
+using AuthAPI.Services.Interfaces;
 using Core.Entities.Models;
-using Core.Enums;
-using Core.Repositories;
-using Core.Services;
+using Core.Enumerations;
+using Core.Interfaces.Repositories;
+using Core.Interfaces.Services;
 
 namespace AuthAPI.Services;
 

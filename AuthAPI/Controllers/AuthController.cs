@@ -1,8 +1,11 @@
 using System.Security.Claims;
 using AuthAPI.AsyncDataService;
 using AuthAPI.Dto;
+using AuthAPI.Dto.Auth;
+using AuthAPI.Dto.Users;
 using AuthAPI.Services;
-using Core.Enums;
+using AuthAPI.Services.Interfaces;
+using Core.Enumerations;
 using Infrastructure.AsyncDataServices.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

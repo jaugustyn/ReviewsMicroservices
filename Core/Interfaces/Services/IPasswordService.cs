@@ -1,4 +1,4 @@
-﻿namespace Core.Services;
+﻿namespace Core.Interfaces.Services;
 
 public interface IPasswordService
 {

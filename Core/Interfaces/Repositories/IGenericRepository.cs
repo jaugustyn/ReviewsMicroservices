@@ -1,7 +1,6 @@
-﻿using System.Linq.Expressions;
-using Core.Entities;
+﻿using Core.Entities;
 
-namespace Core.Repositories;
+namespace Core.Interfaces.Repositories;
 
 public interface IGenericRepository<T> where T : class, IEntityBase
 {

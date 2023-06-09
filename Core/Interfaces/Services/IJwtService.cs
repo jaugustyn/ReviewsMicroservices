@@ -1,7 +1,6 @@
-﻿using System.Security.Claims;
-using Core.Entities.Models;
+﻿using Core.Entities.Models;
 
-namespace Core.Services;
+namespace Core.Interfaces.Services;
 
 public interface IJwtService
 {

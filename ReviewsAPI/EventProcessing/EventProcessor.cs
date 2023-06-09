@@ -1,5 +1,5 @@
 ﻿using System.Text.Json;
-using Core.Repositories;
+using Core.Interfaces.Repositories;
 using Infrastructure.AsyncDataServices.Dto;
 
 namespace ReviewsAPI.EventProcessing;

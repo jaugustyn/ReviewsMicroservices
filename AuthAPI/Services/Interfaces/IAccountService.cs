@@ -1,6 +1,7 @@
-﻿using AuthAPI.Dto;
+﻿using AuthAPI.Dto.Auth;
+using AuthAPI.Dto.Users;
 
-namespace AuthAPI.Services;
+namespace AuthAPI.Services.Interfaces;
 
 public interface IAccountService
 {

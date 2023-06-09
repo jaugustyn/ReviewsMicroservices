@@ -1,10 +1,10 @@
 ﻿using Core.Entities;
 using Core.Entities.Models;
-using Core.Enums;
-using Core.Services;
+using Core.Enumerations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
+using Services.Services;
 
 namespace Infrastructure.Data;
 

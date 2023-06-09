@@ -7,7 +7,6 @@ using CommentsAPI.Controllers;
 using CommentsAPI.Dto.Comment;
 using CommentsAPI.Services;
 using Core.Entities.Models;
-using Core.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;

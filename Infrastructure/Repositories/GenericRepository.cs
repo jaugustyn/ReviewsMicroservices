@@ -1,8 +1,8 @@
 ﻿using Core.Entities;
-using Core.Repositories;
 using Infrastructure.Data;
 using MongoDB.Driver;
 using System.Linq.Expressions;
+using Core.Interfaces.Repositories;
 
 namespace Infrastructure.Repositories;
 

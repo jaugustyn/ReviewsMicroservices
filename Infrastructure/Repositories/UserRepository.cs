@@ -1,5 +1,5 @@
 ﻿using Core.Entities.Models;
-using Core.Repositories;
+using Core.Interfaces.Repositories;
 using Infrastructure.Data;
 using MongoDB.Driver;
 

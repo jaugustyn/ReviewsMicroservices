@@ -1,7 +1,7 @@
-﻿using AuthAPI.Dto;
-using Core.Enums;
+﻿using AuthAPI.Dto.Users;
+using Core.Enumerations;
 
-namespace AuthAPI.Services;
+namespace AuthAPI.Services.Interfaces;
 
 public interface IUserService
 {

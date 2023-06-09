@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace AuthAPI.Dto;
+namespace AuthAPI.Dto.Auth;
 
 public class MessageResponse
 {

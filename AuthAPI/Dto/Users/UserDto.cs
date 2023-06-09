@@ -1,7 +1,7 @@
 ﻿using Core.Entities.Models;
-using Core.Enums;
+using Core.Enumerations;
 
-namespace AuthAPI.Dto;
+namespace AuthAPI.Dto.Users;
 
 public class UserDto
 {

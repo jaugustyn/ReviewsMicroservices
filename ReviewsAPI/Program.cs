@@ -1,14 +1,15 @@
 using System.Text.Json.Serialization;
 using Core.Configuration;
 using Core.Entities.Models;
-using Core.Repositories;
-using Core.Services;
+using Core.Interfaces.Repositories;
+using Core.Interfaces.Services;
 using Infrastructure.Configuration;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
 using ReviewsAPI.AsyncDataService;
 using ReviewsAPI.EventProcessing;
 using ReviewsAPI.Services;
+using Services.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
