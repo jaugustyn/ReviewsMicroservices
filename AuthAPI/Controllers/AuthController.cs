@@ -37,7 +37,7 @@ public class AuthController : ControllerBase
         var loginResult = await _accountService.Login(dto);
 
         if (!loginResult.IsAuthenticated) 
-            return Unauthorized(new MessageResponse(errorMessage:loginResult.Message));
+            return Unauthorized(new {error_message = loginResult.Message});
 
         return Ok(loginResult);
     }
@@ -52,37 +52,35 @@ public class AuthController : ControllerBase
         var newUser = await _accountService.Register(user);
 
         if (newUser is null) 
-            return Conflict(new MessageResponse(errorMessage:"Email is already in use."));
+            return Conflict(new {error_message = "Email is already in use."});
 
         return Ok(newUser);
     }
 
-    [HttpPost]
-    [Route("token/refresh")]
+    [HttpPost("token/refresh")]
     public async Task<IActionResult> Refresh(TokenRequestModel token)
     {
         if (token is null) 
-            return BadRequest(new MessageResponse(errorMessage:"Invalid client request"));
+            return BadRequest(new {error_message = "Invalid client request"});
 
         var refreshResult = await _accountService.RefreshToken(token);
 
         if (refreshResult is null) 
-            return BadRequest(new MessageResponse(errorMessage: refreshResult.Message));
+            return BadRequest(new {error_message = refreshResult.Message});
 
         return Ok(refreshResult);
     }
 
-    [HttpPost]
+    [HttpPost("token/revoke")]
     [Authorize]
-    [Route("token/revoke")]
     public async Task<IActionResult> Revoke(TokenRequestModel token)
     {
         var isRevoked = await _accountService.RevokeToken(token);
 
         if (!isRevoked) 
-            return BadRequest(new MessageResponse(errorMessage:"Token expired."));
+            return BadRequest(new {error_message = "Token expired."});
 
-        return Ok(new MessageResponse(errorMessage: "Token revoked."));
+        return Ok(new {error_message = "Token revoked."});
     }
 
     [HttpGet("currentUser")]
@@ -103,15 +101,15 @@ public class AuthController : ControllerBase
         var user = await _userService.GetUserByEmailAsync(email);
 
         if (user is null) 
-            return NotFound(new MessageResponse(errorMessage:"User does not exist"));
+            return NotFound(new {error_message = "User does not exist"});
 
         if (!Enum.IsDefined(typeof(Role), role))
-            return BadRequest(new MessageResponse(errorMessage: $"Role '{role}' does not exist"));
+            return BadRequest(new {error_message = "Role '{role}' does not exist"});
 
         var changed = await _userService.ChangeRole(user.Id, role);
         
         if (changed is null) 
-            return Conflict(new MessageResponse(errorMessage:"Cannot change the role."));
+            return Conflict(new {error_message = "Cannot change the role."});
 
         return Ok(changed);
     }
