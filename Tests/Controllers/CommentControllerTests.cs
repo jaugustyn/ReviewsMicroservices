@@ -33,9 +33,9 @@ public class CommentControllerTests
         // Arrange
         var expectedComments = new List<CommentDto>
         {
-            new() { Id = Guid.NewGuid(), Text = "Comment 1", CreatedDate = DateTimeOffset.Now, ReviewId = Guid.NewGuid(), UserId = Guid.NewGuid() },
-            new() { Id = Guid.NewGuid(), Text = "Comment 2", CreatedDate = DateTimeOffset.Now, ReviewId = Guid.NewGuid(), UserId = Guid.NewGuid() },
-            new() { Id = Guid.NewGuid(), Text = "Comment 3", CreatedDate = DateTimeOffset.Now, ReviewId = Guid.NewGuid(), UserId = Guid.NewGuid() }
+            new() { Id = Guid.NewGuid(), Text = "Comment 1", CreatedAt = DateTimeOffset.Now, ReviewId = Guid.NewGuid(), UserId = Guid.NewGuid() },
+            new() { Id = Guid.NewGuid(), Text = "Comment 2", CreatedAt = DateTimeOffset.Now, ReviewId = Guid.NewGuid(), UserId = Guid.NewGuid() },
+            new() { Id = Guid.NewGuid(), Text = "Comment 3", CreatedAt = DateTimeOffset.Now, ReviewId = Guid.NewGuid(), UserId = Guid.NewGuid() }
         };
 
         _commentServiceMock.Setup(service => service.GetAllAsync()).ReturnsAsync(expectedComments);
@@ -74,7 +74,7 @@ public class CommentControllerTests
         var userId = Guid.NewGuid();
         var newComment = new CommentDto
         {
-            Id = Guid.NewGuid(), Text = "New Comment", CreatedDate = DateTimeOffset.Now, ReviewId = postId,
+            Id = Guid.NewGuid(), Text = "New Comment", CreatedAt = DateTimeOffset.Now, ReviewId = postId,
             UserId = userId
         };
         
@@ -114,7 +114,7 @@ public class CommentControllerTests
         var commentId = Guid.NewGuid();
         var expectedComment = new CommentDto
         {
-            Id = commentId, Text = "Test Comment", CreatedDate = DateTimeOffset.Now, ReviewId = Guid.NewGuid(),
+            Id = commentId, Text = "Test Comment", CreatedAt = DateTimeOffset.Now, ReviewId = Guid.NewGuid(),
             UserId = Guid.NewGuid()
         };
 
@@ -161,7 +161,7 @@ public class CommentControllerTests
 
         var existingComment = new CommentDto
         {
-            Id = commentId, Text = "Old Comment", CreatedDate = DateTimeOffset.Now, ReviewId = Guid.NewGuid(),
+            Id = commentId, Text = "Old Comment", CreatedAt = DateTimeOffset.Now, ReviewId = Guid.NewGuid(),
             UserId = userId
         };
         
@@ -228,7 +228,7 @@ public class CommentControllerTests
 
         var existingComment = new CommentDto
         {
-            Id = commentId, Text = "Test Comment", CreatedDate = DateTimeOffset.Now, ReviewId = Guid.NewGuid(),
+            Id = commentId, Text = "Test Comment", CreatedAt = DateTimeOffset.Now, ReviewId = Guid.NewGuid(),
             UserId = userId
         };
 

@@ -35,9 +35,9 @@ public class ReviewControllerTests
         // Arrange
         var expectedReviews = new List<ReviewDto>
         {
-            new() { Id = Guid.NewGuid(), Title = "Review 1", Text = "Text 1", UserId = Guid.NewGuid(), CreatedDate = DateTimeOffset.Now },
-            new() { Id = Guid.NewGuid(), Title = "Review 2", Text = "Text 2", UserId = Guid.NewGuid(), CreatedDate = DateTimeOffset.Now },
-            new() { Id = Guid.NewGuid(), Title = "Review 3", Text = "Content 3", UserId = Guid.NewGuid(), CreatedDate = DateTimeOffset.Now }
+            new() { Id = Guid.NewGuid(), Title = "Review 1", Text = "Text 1", UserId = Guid.NewGuid(), CreatedAt = DateTimeOffset.Now },
+            new() { Id = Guid.NewGuid(), Title = "Review 2", Text = "Text 2", UserId = Guid.NewGuid(), CreatedAt = DateTimeOffset.Now },
+            new() { Id = Guid.NewGuid(), Title = "Review 3", Text = "Content 3", UserId = Guid.NewGuid(), CreatedAt = DateTimeOffset.Now }
         };
 
         _reviewServiceMock.Setup(service => service.GetAllAsync()).ReturnsAsync(expectedReviews);
@@ -65,7 +65,7 @@ public class ReviewControllerTests
         // Arrange
         var userId = Guid.NewGuid();
         var reviewCreateDto = new ReviewCreateDto {Title = "New Review", Text = "Review content"};
-        var newReview = new ReviewDto { Id = Guid.NewGuid(), Title = "New Review", Text = "Review content", UserId = userId, CreatedDate = DateTimeOffset.Now };
+        var newReview = new ReviewDto { Id = Guid.NewGuid(), Title = "New Review", Text = "Review content", UserId = userId, CreatedAt = DateTimeOffset.Now };
 
         _reviewServiceMock.Setup(service => service.CreateAsync(userId, reviewCreateDto)).ReturnsAsync(newReview);
 
@@ -92,7 +92,7 @@ public class ReviewControllerTests
         Assert.Equal(newReview.Title, createdReview.Title);
         Assert.Equal(newReview.Text, createdReview.Text);
         Assert.Equal(newReview.UserId, createdReview.UserId);
-        Assert.Equal(newReview.CreatedDate, createdReview.CreatedDate);
+        Assert.Equal(newReview.CreatedAt, createdReview.CreatedAt);
     }
 
     #endregion
@@ -104,7 +104,7 @@ public class ReviewControllerTests
     {
         // Arrange
         var reviewId = Guid.NewGuid();
-        var expectedReview = new ReviewDto { Id = reviewId, Title = "Test Review", Text = "Text 1", UserId = Guid.NewGuid(), CreatedDate = DateTimeOffset.Now };
+        var expectedReview = new ReviewDto { Id = reviewId, Title = "Test Review", Text = "Text 1", UserId = Guid.NewGuid(), CreatedAt = DateTimeOffset.Now };
 
         _reviewServiceMock.Setup(service => service.GetByIdAsync(reviewId)).ReturnsAsync(expectedReview);
 
@@ -149,7 +149,7 @@ public class ReviewControllerTests
         var userId = Guid.NewGuid();
         var reviewUpdateDto = new ReviewUpdateDto() {Title = "Updated Review", Text = "Updated content"};
 
-        var review = new ReviewDto { Id = reviewId, Title = "Old Review", Text = "Old content", UserId = userId, CreatedDate = DateTimeOffset.Now };
+        var review = new ReviewDto { Id = reviewId, Title = "Old Review", Text = "Old content", UserId = userId, CreatedAt = DateTimeOffset.Now };
 
         _reviewServiceMock.Setup(service => service.GetByIdAsync(reviewId)).ReturnsAsync(review);
         _reviewServiceMock.Setup(service => service.UpdateAsync(reviewId, reviewUpdateDto)).Returns(Task.CompletedTask);
@@ -214,7 +214,7 @@ public class ReviewControllerTests
         var review = new ReviewDto
         {
             Id = reviewId, Title = "Review to delete", Text = "Content to delete", UserId = userId,
-            CreatedDate = DateTimeOffset.Now
+            CreatedAt = DateTimeOffset.Now
         };
 
         _reviewServiceMock.Setup(service => service.GetByIdAsync(reviewId)).ReturnsAsync(review);
