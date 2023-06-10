@@ -15,17 +15,29 @@ public abstract class MessageBusSubscriber : BackgroundService
     {
         var factory = new ConnectionFactory
         {
-            Uri = new Uri("amqp://guest:guest@rabbitmq:5672/")
+            Uri = new Uri("amqp://guest:guest@rabbitmq:5672/"),
+            AutomaticRecoveryEnabled = true,
         };
-        _connection = factory.CreateConnection();
-        _channel = _connection.CreateModel();
-        _channel.ExchangeDeclare("trigger", ExchangeType.Fanout);
-        _queueName = _channel.QueueDeclare().QueueName;
-        _channel.QueueBind(_queueName,
-            "trigger",
-            "");
 
-        Console.WriteLine("--> Listening on the Message Bus...");
+        try
+        {
+            _connection = factory.CreateConnection();
+            _channel = _connection.CreateModel();
+            _channel.ExchangeDeclare("trigger", ExchangeType.Fanout);
+            _queueName = _channel.QueueDeclare().QueueName;
+            _channel.QueueBind(_queueName, "trigger", "");
+
+            Console.WriteLine("--> Listening on the Message Bus...");
+        }
+        catch (RabbitMQ.Client.Exceptions.BrokerUnreachableException ex)
+        {
+            Console.WriteLine($"--> Connection failed: {ex.Message}, retrying in 2s...");
+            Thread.Sleep(2000);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"--> Connection failed: {ex.Message}");
+        }
     }
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
