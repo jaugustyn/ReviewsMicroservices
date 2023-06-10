@@ -23,6 +23,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{E3BF1832-4564-48D9-8E62-0E7F7F049F89}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReviewsIntegrationTests", "ReviewsIntegrationTests\ReviewsIntegrationTests.csproj", "{C833862E-D3EB-45E8-85EA-E57693E047C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "docker-compose", "docker-compose.dcproj", "{DA802095-B1BD-4EBD-A349-7C06461EDE04}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +40,7 @@ Global
 		{DE2034E9-5208-46CF-80D6-B61A9388B371} = {9582C491-1B61-47B9-848C-094720318889}
 		{2FADFE17-9319-459D-AFE3-21C287B3B6FA} = {A6B0C22F-1FAA-4F6F-86D3-366616DB728B}
 		{E3BF1832-4564-48D9-8E62-0E7F7F049F89} = {9582C491-1B61-47B9-848C-094720318889}
+		{C833862E-D3EB-45E8-85EA-E57693E047C1} = {A6B0C22F-1FAA-4F6F-86D3-366616DB728B}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{BB763C9A-B539-4B2C-8AD7-FB4A1C2CF9F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -66,5 +71,13 @@ Global
 		{E3BF1832-4564-48D9-8E62-0E7F7F049F89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3BF1832-4564-48D9-8E62-0E7F7F049F89}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3BF1832-4564-48D9-8E62-0E7F7F049F89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C833862E-D3EB-45E8-85EA-E57693E047C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C833862E-D3EB-45E8-85EA-E57693E047C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C833862E-D3EB-45E8-85EA-E57693E047C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C833862E-D3EB-45E8-85EA-E57693E047C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA802095-B1BD-4EBD-A349-7C06461EDE04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA802095-B1BD-4EBD-A349-7C06461EDE04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA802095-B1BD-4EBD-A349-7C06461EDE04}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA802095-B1BD-4EBD-A349-7C06461EDE04}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 EndGlobal
