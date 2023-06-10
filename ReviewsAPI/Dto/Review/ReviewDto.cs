@@ -5,7 +5,7 @@ namespace ReviewsAPI.Dto.Review;
 public class ReviewDto : ReviewCreateDto, IEntityBase
 {
     public Guid UserId { get; init; }
-    public DateTimeOffset CreatedDate { get; init; }
+    public DateTimeOffset CreatedAt { get; init; }
     public Guid Id { get; init; }
 
     public static ReviewDto ReviewToDto(Core.Entities.Models.Review review)
@@ -16,7 +16,7 @@ public class ReviewDto : ReviewCreateDto, IEntityBase
             Title = review.Title,
             Text = review.Text,
             UserId = review.UserId,
-            CreatedDate = review.CreatedAt
+            CreatedAt = review.CreatedAt
         };
     }
 }

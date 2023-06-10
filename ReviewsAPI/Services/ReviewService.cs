@@ -17,7 +17,7 @@ public class ReviewService : IReviewService
     {
         var reviews = await _reviewRepository.GetAllAsync();
         var userReviews = reviews.Where(x => x.UserId.Equals(userId)).Select(ReviewDto.ReviewToDto)
-            .OrderByDescending(x => x.CreatedDate).ToList();
+            .OrderByDescending(x => x.CreatedAt).ToList();
 
         return userReviews;
     }
@@ -27,7 +27,7 @@ public class ReviewService : IReviewService
         // Reviews are already ordered descending
         var reviews = await _reviewRepository.GetAllAsync();
         var lastReview = reviews.Where(x => x.UserId.Equals(userId)).Select(ReviewDto.ReviewToDto)
-            .OrderByDescending(x => x.CreatedDate).Take(1).FirstOrDefault();
+            .OrderByDescending(x => x.CreatedAt).Take(1).FirstOrDefault();
 
         return lastReview;
     }
@@ -72,7 +72,7 @@ public class ReviewService : IReviewService
             Title = entity.Title,
             Text = entity.Text,
             UserId = oldReview.UserId,
-            CreatedAt = oldReview.CreatedDate
+            CreatedAt = oldReview.CreatedAt
         };
 
         await _reviewRepository.UpdateAsync(reviewId, review);
@@ -91,7 +91,7 @@ public class ReviewService : IReviewService
         if (!string.IsNullOrWhiteSpace(keyPhrase))
         {
             keyPhrase = keyPhrase.ToLower();
-            query = reviews.AsQueryable().Where(x => x.Title.ToLower().Contains(keyPhrase)).OrderBy(x => x.CreatedDate);
+            query = reviews.AsQueryable().Where(x => x.Title.ToLower().Contains(keyPhrase)).OrderBy(x => x.CreatedAt);
         }
 
         return query;

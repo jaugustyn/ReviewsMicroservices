@@ -12,7 +12,7 @@ public class UserDto
     public string Email { get; init; }
     public DateTime Birthday { get; set; }
     public Role Role { get; set; }
-    public DateTimeOffset CreatedDate { get; init; }
+    public DateTimeOffset CreatedAt { get; init; }
 
     public static UserDto UserToDto(User user)
     {
@@ -25,7 +25,7 @@ public class UserDto
             FirstName = user.FirstName,
             LastName = user.LastName,
             Birthday = user.Birthday,
-            CreatedDate = user.CreatedAt
+            CreatedAt = user.CreatedAt
         };
     }
 }

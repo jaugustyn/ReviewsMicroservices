@@ -33,7 +33,7 @@ public class AccountService : IAccountService
 
         if (user == null)
         {
-            authModel.Message = $"Account with {userLoginDto.Email} doesn't exist.";
+            authModel.Message = $"Account with email '{userLoginDto.Email}' doesn't exist.";
             return authModel;
         }
 

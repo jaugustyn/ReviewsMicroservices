@@ -27,9 +27,9 @@ public class CommentRepository : GenericRepository<Comment>, ICommentRepository
         return _collection.Find(filter).ToList();
     }
 
-    public void DeleteCommentSync(Guid id)
+    public void DeleteCommentSync(Guid commentId)
     {
-        var filter = _filterBuilder.Eq("_id", id);
+        var filter = _filterBuilder.Eq(x => x.Id, commentId);
         _collection.DeleteOne(filter);
     }
 }

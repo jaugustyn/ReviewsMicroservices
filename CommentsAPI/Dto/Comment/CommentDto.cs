@@ -5,7 +5,7 @@ namespace CommentsAPI.Dto.Comment;
 public class CommentDto : IEntityBase
 {
     public string Text { get; init; }
-    public DateTimeOffset CreatedDate { get; init; }
+    public DateTimeOffset CreatedAt { get; init; }
     public Guid ReviewId { get; init; }
     public Guid UserId { get; init; }
     public Guid Id { get; init; }
@@ -16,7 +16,7 @@ public class CommentDto : IEntityBase
         {
             Id = comment.Id,
             Text = comment.Text,
-            CreatedDate = comment.CreatedAt,
+            CreatedAt = comment.CreatedAt,
             ReviewId = comment.ReviewId,
             UserId = comment.UserId
         };

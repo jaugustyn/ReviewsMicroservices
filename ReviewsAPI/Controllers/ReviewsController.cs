@@ -40,10 +40,10 @@ public class ReviewsController : ControllerBase
         return NotFound();
     }
 
-    [HttpGet("{id:guid}")]
-    public async Task<ActionResult<ReviewDto>> GetReview(Guid id)
+    [HttpGet("{reviewId:guid}")]
+    public async Task<ActionResult<ReviewDto>> GetReview(Guid reviewId)
     {
-        var review = await _reviewService.GetByIdAsync(id);
+        var review = await _reviewService.GetByIdAsync(reviewId);
         if (review is null) return NotFound();
 
         return Ok(review);
@@ -72,26 +72,26 @@ public class ReviewsController : ControllerBase
         return CreatedAtAction(nameof(GetReview), new {id = newReview.Id}, newReview);
     }
 
-    [HttpPut("{id:guid}")]
+    [HttpPut("{reviewId:guid}")]
     [Authorize]
-    public async Task<IActionResult> PutReview(Guid id, ReviewUpdateDto reviewUpdateDto)
+    public async Task<IActionResult> PutReview(Guid reviewId, ReviewUpdateDto reviewUpdateDto)
     {
         var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
         var role = User.FindFirstValue(ClaimTypes.Role);
 
-        var review = await _reviewService.GetByIdAsync(id);
+        var review = await _reviewService.GetByIdAsync(reviewId);
 
         if (review is null) return NotFound();
         
         if (!review.UserId.Equals(userId) && role != "Administrator")
             return Unauthorized(new {error_message = "The review does not belong to this user"});
 
-        await _reviewService.UpdateAsync(id, reviewUpdateDto);
+        await _reviewService.UpdateAsync(reviewId, reviewUpdateDto);
 
         return NoContent();
     }
 
-    [HttpDelete("{id:guid}")]
+    [HttpDelete("{reviewId:guid}")]
     [Authorize]
     public async Task<IActionResult> DeleteReview(Guid id)
     {

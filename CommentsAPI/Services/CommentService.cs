@@ -17,7 +17,7 @@ public class CommentService : ICommentService
     {
         var comments = await _commentRepository.GetAllAsync();
         var userComments = comments.Where(x => x.UserId.Equals(userId)).Select(CommentDto.CommentToDto)
-            .OrderByDescending(x => x.CreatedDate);
+            .OrderByDescending(x => x.CreatedAt);
 
         return userComments;
     }
@@ -26,7 +26,7 @@ public class CommentService : ICommentService
     {
         var comments = await _commentRepository.GetAllAsync();
         var userComments = comments.Where(x => x.ReviewId.Equals(reviewId)).Select(CommentDto.CommentToDto)
-            .OrderBy(x => x.CreatedDate);
+            .OrderBy(x => x.CreatedAt);
 
         return userComments;
     }
