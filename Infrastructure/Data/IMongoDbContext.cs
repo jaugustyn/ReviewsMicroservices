@@ -1,4 +1,5 @@
 ﻿using Core.Entities.Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Infrastructure.Data
@@ -7,6 +8,7 @@ namespace Infrastructure.Data
     {
         IMongoCollection<Comment> Comments { get; }
         IMongoCollection<Review> Reviews { get; }
+        IMongoCollection<Rating> Ratings { get; }
         IMongoCollection<User> Users { get; }
         IMongoCollection<RefreshToken> RefreshTokens { get; }
         IMongoCollection<T> GetCollection<T>(string name);

@@ -1,9 +1,9 @@
-﻿namespace Infrastructure.Configuration;
+﻿using Infrastructure.Data;
 
-public class MongoDbSettings
+namespace Infrastructure.Configuration;
+
+public class MongoDbSettings: IMongoDbSettings
 {
-    public string Host { get; set; }
-    public int Port { get; set; }
-
-    public string ConnectionString => $"mongodb://{Host}:{Port}";
+    public string DatabaseName { get; set; }
+    public string ConnectionString { get; set; }
 }
