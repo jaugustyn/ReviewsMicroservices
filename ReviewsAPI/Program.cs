@@ -1,4 +1,3 @@
-using System.Text.Json.Serialization;
 using Core.Configuration;
 using Core.Entities.Models;
 using Core.Interfaces.Repositories;
@@ -14,11 +13,6 @@ using Services.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers().AddJsonOptions(options =>
-{
-    // serialize enums as strings in api responses (e.g. Role)
-    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-});
 builder.Services.AddEndpointsApiExplorer();
 
 // JWT
@@ -31,11 +25,12 @@ builder.Services.ConfigureCors();
 builder.Services.ConfigureSwagger();
 
 // Database
-var mongoDbSettings = builder.Configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
-builder.Services.ConfigureMongo(mongoDbSettings);
+builder.Services.ConfigureMongo(builder.Configuration);
 builder.Services.AddSingleton<IMongoDbContext, MongoDbContext>();
 builder.Services.AddTransient<IReviewRepository, ReviewRepository>();
+builder.Services.AddTransient<IRatingRepository, RatingRepository>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
+builder.Services.AddScoped<IRatingService, RatingService>();
 builder.Services.AddTransient<IEventProcessor, EventProcessor>(); 
 
 // DataService
@@ -52,10 +47,12 @@ if (app.Environment.IsDevelopment())
     
     // Seed database
     SeedDatabase<Review>.Seed(app);
+    SeedDatabase<Rating>.Seed(app);
 }
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
+app.UseHealthChecks("/healthcheck");
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -63,3 +60,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }

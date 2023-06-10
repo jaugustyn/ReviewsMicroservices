@@ -14,11 +14,6 @@ using Services.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers().AddJsonOptions(options =>
-{
-    // serialize enums as strings in api responses (e.g. Role)
-    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-});
 builder.Services.AddEndpointsApiExplorer();
 
 // JWT
@@ -31,8 +26,7 @@ builder.Services.ConfigureCors();
 builder.Services.ConfigureSwagger();
 
 // Database
-var mongoDbSettings = builder.Configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
-builder.Services.ConfigureMongo(mongoDbSettings);
+builder.Services.ConfigureMongo(builder.Configuration);
 builder.Services.AddSingleton<IMongoDbContext, MongoDbContext>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
@@ -59,6 +53,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseHealthChecks("/healthcheck");
 
 app.UseAuthorization();
 
