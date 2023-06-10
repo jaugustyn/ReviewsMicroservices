@@ -29,6 +29,10 @@ public static class SeedDatabase<T> where T: class, IEntityBase
             {
                 SeedReviews(context.Reviews);
             }
+            else if (typeof(T) == typeof(Rating))
+            {
+                SeedReviewRatings(context.Ratings);
+            }
             else if (typeof(T) == typeof(Comment))
             {
                 SeedComments(context.Comments);
@@ -36,7 +40,7 @@ public static class SeedDatabase<T> where T: class, IEntityBase
         }
         catch (TimeoutException ex)
         {
-            Console.WriteLine("Timeout. Check database connection.\n" + ex);
+            Console.WriteLine("Cannot seed database. Timeout. Check database connection.\n" + ex);
             throw;
         }
         catch (Exception ex)
@@ -60,6 +64,13 @@ public static class SeedDatabase<T> where T: class, IEntityBase
             collection.InsertMany(GetSeedReviews());
         }
     }
+    private static void SeedReviewRatings(IMongoCollection<Rating> collection)
+    {
+        if (!collection.AsQueryable().Any())
+        {
+            collection.InsertMany(GetSeedReviewRatings());
+        }
+    }
 
     private static void SeedComments(IMongoCollection<Comment> collection)
     {
@@ -76,24 +87,24 @@ public static class SeedDatabase<T> where T: class, IEntityBase
             new Comment()
             {
                 Id = new Guid(),
-                UserId = new Guid("d4eecc03-c256-4b1d-961d-d7a520804d1a"),
-                ReviewId = new Guid("d54a4a7a-a4ff-458f-abec-887eae5ae01e"),
+                UserId = new Guid("b679ab75-976d-4584-a1fc-e95bd65b89e5"),
+                ReviewId = new Guid("d0adc59c-cf85-44e7-86c2-aa8c76ee4c64"),
                 CreatedAt = DateTimeOffset.Now,
                 Text = "Komentarz 1"
             },
             new Comment()
             {
                 Id = new Guid(),
-                UserId = new Guid("d4eecc03-c256-4b1d-961d-d7a520804d1a"),
-                ReviewId = new Guid("d54a4a7a-a4ff-458f-abec-887eae5ae01e"),
+                UserId = new Guid("b679ab75-976d-4584-a1fc-e95bd65b89e5"),
+                ReviewId = new Guid("d0adc59c-cf85-44e7-86c2-aa8c76ee4c64"),
                 CreatedAt = DateTimeOffset.Now,
                 Text = "Komentarz 2"
             },
             new Comment()
             {
                 Id = new Guid(),
-                UserId = new Guid("2cb18a07-a322-4b7b-9077-fb79dac84deb"),
-                ReviewId = new Guid("d54a4a7a-a4ff-458f-abec-887eae5ae01e"),
+                UserId = new Guid("ff4065ea-d922-4c6a-a5b1-0f33650c02d9"),
+                ReviewId = new Guid("d0adc59c-cf85-44e7-86c2-aa8c76ee4c64"),
                 CreatedAt = DateTimeOffset.Now,
                 Text = "Komentarz 3"
             }
@@ -109,7 +120,7 @@ public static class SeedDatabase<T> where T: class, IEntityBase
         {
             new User()
             {
-                Id = new Guid("d4eecc03-c256-4b1d-961d-d7a520804d1a"),
+                Id = new Guid("b679ab75-976d-4584-a1fc-e95bd65b89e5"),
                 CreatedAt = DateTimeOffset.Now,
                 Username = "Janek51236",
                 Email = "user@example.pl",
@@ -122,7 +133,7 @@ public static class SeedDatabase<T> where T: class, IEntityBase
             },
             new User()
             {
-                Id = new Guid("2cb18a07-a322-4b7b-9077-fb79dac84deb"),
+                Id = new Guid("ff4065ea-d922-4c6a-a5b1-0f33650c02d9"),
                 CreatedAt = DateTimeOffset.Now,
                 Username = "MaciekAdmin",
                 Email = "admin@example.pl",
@@ -141,19 +152,39 @@ public static class SeedDatabase<T> where T: class, IEntityBase
         {
             new Review()
             {
-                Id = new Guid("d54a4a7a-a4ff-458f-abec-887eae5ae01e"),
+                Id = new Guid("d0adc59c-cf85-44e7-86c2-aa8c76ee4c64"),
                 CreatedAt = DateTimeOffset.Now,
-                Title = "Przykładowy tytuł",
+                Title = "Ciekawa recenzja",
                 Text = "Ciekawy content",
-                UserId = new Guid("2cb18a07-a322-4b7b-9077-fb79dac84deb"),
+                UserId = new Guid("ff4065ea-d922-4c6a-a5b1-0f33650c02d9"),
             },
             new Review()
             {
-                Id = new Guid("08e74b65-4e6f-429f-aef9-929dad4bf724"),
+                Id = new Guid("06f97564-7c6c-4f31-8880-b608cdf34f40"),
                 CreatedAt = DateTimeOffset.Now,
-                Title = "Kolejny przykładowy tytuł",
-                Text = "Jeszcze ciekawszy content",
-                UserId = new Guid("d4eecc03-c256-4b1d-961d-d7a520804d1a"),
+                Title = "Niezła recenzja",
+                Text = "Niezły content",
+                UserId = new Guid("b679ab75-976d-4584-a1fc-e95bd65b89e5"),
+            }
+        };
+    }
+    private static IEnumerable<Rating> GetSeedReviewRatings()
+    {
+        return new List<Rating>()
+        {
+            new Rating()
+            {
+                Id = new Guid(),
+                ReviewId = new Guid("d0adc59c-cf85-44e7-86c2-aa8c76ee4c64"),
+                UserId = new Guid("ff4065ea-d922-4c6a-a5b1-0f33650c02d9"),
+                Value = 5,
+            },
+            new Rating()
+            {
+                Id = new Guid(),
+                ReviewId = new Guid("d0adc59c-cf85-44e7-86c2-aa8c76ee4c64"),
+                UserId = new Guid("b679ab75-976d-4584-a1fc-e95bd65b89e5"),
+                Value = 1,
             }
         };
     }
