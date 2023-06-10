@@ -56,6 +56,7 @@ app.UseHttpsRedirection();
 
 app.UseHealthChecks("/healthcheck");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
