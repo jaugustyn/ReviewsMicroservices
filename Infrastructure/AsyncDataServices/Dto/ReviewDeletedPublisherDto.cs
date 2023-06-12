@@ -2,6 +2,12 @@
 
 public class ReviewDeletedPublisherDto
 {
-    public Guid Id { get; set; }
+    public Guid ReviewId { get; set; }
     public string Event { get; set; }
+
+    public ReviewDeletedPublisherDto(Guid reviewId, string eventName)
+    {
+        ReviewId = reviewId;
+        Event = eventName;
+    }
 }

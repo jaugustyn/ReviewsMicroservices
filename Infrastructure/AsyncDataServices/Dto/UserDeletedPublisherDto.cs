@@ -2,6 +2,12 @@
 
 public class UserDeletedPublisherDto
 {
-    public Guid userId { get; set; }
+    public Guid UserId { get; set; }
     public string Event { get; set; }
+
+    public UserDeletedPublisherDto(Guid userId, string eventName)
+    {
+        UserId = userId;
+        Event = eventName;
+    }
 }
