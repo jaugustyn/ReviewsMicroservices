@@ -1,5 +1,4 @@
-﻿using AuthAPI.Dto;
-using AuthAPI.Dto.Auth;
+﻿using AuthAPI.Dto.Auth;
 using AuthAPI.Dto.Users;
 using AuthAPI.Services.Interfaces;
 using Core.Entities.Models;
@@ -52,7 +51,7 @@ public class AccountService : IAccountService
         authModel.Role = user.Role;
 
         var anyActiveToken = await _tokenRepository.GetByUserIdAsync(user.Id);
-        if (anyActiveToken is not null && anyActiveToken.Expires >= DateTimeOffset.Now.AddHours(1))
+        if (anyActiveToken is not null && anyActiveToken.IsActive)
         {
             authModel.RefreshToken = anyActiveToken.Token;
             authModel.RefreshTokenExpiration = anyActiveToken.Expires;
@@ -80,15 +79,15 @@ public class AccountService : IAccountService
         return result;
     }
 
-    public async Task<UserDto?> ChangePassword(Guid id, UserChangePasswordDto userChangePasswordDto)
+    public async Task<UserDto?> ChangePassword(Guid userId, UserChangePasswordDto userChangePasswordDto)
     {
-        var user = await _userRepository.GetByIdAsync(id);
+        var user = await _userRepository.GetByIdAsync(userId);
 
         if (user is null) return null;
 
         if (!Verify(userChangePasswordDto.OldPassword, user)) return null;
 
-        var result = await _userService.ChangePassword(id, userChangePasswordDto);
+        var result = await _userService.ChangePassword(userId, userChangePasswordDto);
 
         return result;
     }
@@ -126,7 +125,7 @@ public class AccountService : IAccountService
 
         var newToken = await _tokenRepository.AddTokenAsync(newRefreshToken);
 
-        // Generate new jwt
+        // Generate new access token
         authModel.IsAuthenticated = true;
         authModel.Token = _jwtAuthService.GenerateAccessToken(user);
         authModel.Email = user.Email;
@@ -141,8 +140,7 @@ public class AccountService : IAccountService
     {
         var refreshToken = await _tokenRepository.GetByTokenAsync(tokenRequestModel.RefreshToken);
 
-        if (refreshToken is null) return false;
-        if (!refreshToken.IsActive) return false;
+        if (refreshToken is null || !refreshToken.IsActive) return false;
 
         refreshToken.RevokedAt = DateTime.UtcNow;
         await _tokenRepository.UpdateTokenAsync(refreshToken);
