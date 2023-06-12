@@ -8,6 +8,7 @@ using Infrastructure.Repositories;
 using ReviewsAPI.AsyncDataService;
 using ReviewsAPI.EventProcessing;
 using ReviewsAPI.Services;
+using ReviewsAPI.Services.Interfaces;
 using Services.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,7 +32,7 @@ builder.Services.AddTransient<IReviewRepository, ReviewRepository>();
 builder.Services.AddTransient<IRatingRepository, RatingRepository>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<IRatingService, RatingService>();
-builder.Services.AddTransient<IEventProcessor, EventProcessor>(); 
+builder.Services.AddTransient<IEventProcessor, EventProcessor>();
 
 // DataService
 builder.Services.AddScoped<IMessageBusReviewClient, MessageBusReviewClient>();
@@ -44,7 +45,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    
+
     // Seed database
     SeedDatabase<Review>.Seed(app);
     SeedDatabase<Rating>.Seed(app);
@@ -61,4 +62,5 @@ app.MapControllers();
 
 app.Run();
 
+// Required to integration tests
 public partial class Program { }

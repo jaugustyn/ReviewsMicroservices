@@ -9,8 +9,8 @@ public class RatingRepository : GenericRepository<Rating>, IRatingRepository
 {
     private readonly FilterDefinitionBuilder<Rating> _filterBuilder = Builders<Rating>.Filter;
     private readonly IMongoCollection<Rating> _collection;
-    
-    public RatingRepository(IMongoDbContext mongoContext): base(mongoContext)
+
+    public RatingRepository(IMongoDbContext mongoContext) : base(mongoContext)
     {
         _collection = mongoContext.Ratings;
     }

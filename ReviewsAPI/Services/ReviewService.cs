@@ -1,6 +1,7 @@
 ﻿using Core.Entities.Models;
 using Core.Interfaces.Repositories;
 using ReviewsAPI.Dto.Review;
+using ReviewsAPI.Services.Interfaces;
 
 namespace ReviewsAPI.Services;
 
@@ -82,12 +83,12 @@ public class ReviewService : IReviewService
     {
         await _reviewRepository.DeleteAsync(id);
     }
-    
+
     public async Task<IEnumerable<ReviewDto>> SearchAsync(string keyPhrase)
     {
         var reviews = await GetAllAsync();
         IQueryable<ReviewDto>? query = null;
-        
+
         if (!string.IsNullOrWhiteSpace(keyPhrase))
         {
             keyPhrase = keyPhrase.ToLower();

@@ -52,7 +52,7 @@ public class EventProcessor : IEventProcessor
 
         if (userPublishedDto is null) return;
 
-        var commentsList = _reviewRepository.GetReviewsByUserIdSync(userPublishedDto.userId);
+        var commentsList = _reviewRepository.GetReviewsByUserIdSync(userPublishedDto.UserId);
 
         foreach (var comment in commentsList) _reviewRepository.DeleteAsync(comment.Id);
     }

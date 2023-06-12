@@ -5,11 +5,11 @@ using MongoDB.Driver;
 
 namespace Infrastructure.Repositories;
 
-public class TokenRepository: ITokenRepository
+public class TokenRepository : ITokenRepository
 {
     private readonly FilterDefinitionBuilder<RefreshToken> _filterBuilder = Builders<RefreshToken>.Filter;
     private readonly IMongoCollection<RefreshToken> _collection;
-    
+
     public TokenRepository(IMongoDbContext mongoContext)
     {
         _collection = mongoContext.RefreshTokens;
@@ -29,7 +29,8 @@ public class TokenRepository: ITokenRepository
 
     public async Task<RefreshToken> GetByUserIdAsync(Guid id)
     {
-        var filter = _filterBuilder.Eq(x => x.UserId, id) & _filterBuilder.Eq(x => x.RevokedAt, null) & _filterBuilder.Gte(x => x.Expires, DateTimeOffset.Now.AddHours(1));
+        var filter = _filterBuilder.Eq(x => x.UserId, id) & _filterBuilder.Eq(x => x.RevokedAt, null) &
+                     _filterBuilder.Gte(x => x.Expires, DateTimeOffset.Now.AddHours(1));
         return await _collection.Find(filter).FirstOrDefaultAsync();
     }
 
@@ -39,6 +40,7 @@ public class TokenRepository: ITokenRepository
         var item = await GetByIdAsync(token.Id);
         return item;
     }
+
     public async Task UpdateTokenAsync(RefreshToken entity)
     {
         var filter = _filterBuilder.Eq("_id", entity.Id);

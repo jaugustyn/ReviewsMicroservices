@@ -9,18 +9,18 @@ public class CommentRepository : GenericRepository<Comment>, ICommentRepository
 {
     private readonly FilterDefinitionBuilder<Comment> _filterBuilder = Builders<Comment>.Filter;
     private readonly IMongoCollection<Comment> _collection;
-    
-    public CommentRepository(IMongoDbContext context): base(context)
+
+    public CommentRepository(IMongoDbContext context) : base(context)
     {
         _collection = context.Comments;
     }
-    
+
     public IEnumerable<Comment> GetCommentsByReviewIdSync(Guid reviewId)
     {
         var filter = _filterBuilder.Eq(x => x.ReviewId, reviewId);
         return _collection.Find(filter).ToList();
     }
-    
+
     public IEnumerable<Comment> GetCommentsByUserIdSync(Guid userId)
     {
         var filter = _filterBuilder.Eq(x => x.UserId, userId);

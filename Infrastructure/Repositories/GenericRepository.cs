@@ -31,7 +31,7 @@ public abstract class GenericRepository<T> : IGenericRepository<T> where T : cla
             throw new Exception(ex.Message);
         }
     }
-    
+
     public async Task<IEnumerable<T>> GetAllAsync()
     {
         return await _collection.Find(_filterBuilder.Empty).ToListAsync();

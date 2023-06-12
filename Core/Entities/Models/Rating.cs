@@ -1,6 +1,6 @@
 ﻿namespace Core.Entities.Models;
 
-public class Rating: IEntityBase
+public class Rating : IEntityBase
 {
     public Guid Id { get; init; }
     public Guid ReviewId { get; init; }

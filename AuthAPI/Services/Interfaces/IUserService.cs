@@ -7,8 +7,8 @@ public interface IUserService
 {
     Task<UserDto> GetUserByEmailAsync(string email);
     Task<UserDto> CreateAsync(UserCreateDto entity);
-    Task<UserDto> UpdateAsync(Guid id, UserUpdateDto entity);
-    Task<UserDto> ChangePassword(Guid id, UserChangePasswordDto entity);
-    Task<UserDto> ChangeRole(Guid id, Role role);
-    Task DeleteAsync(Guid id);
+    Task<UserDto> UpdateAsync(Guid userId, UserUpdateDto entity);
+    Task<UserDto> ChangePassword(Guid userId, UserChangePasswordDto entity);
+    Task<UserDto> ChangeRole(Guid userId, Role role);
+    Task DeleteAsync(Guid userId);
 }

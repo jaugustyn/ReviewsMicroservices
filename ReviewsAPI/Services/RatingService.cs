@@ -1,11 +1,11 @@
 ﻿using Core.Entities.Models;
 using Core.Interfaces.Repositories;
 using ReviewsAPI.Dto.Rating;
-using ReviewsAPI.Dto.Review;
+using ReviewsAPI.Services.Interfaces;
 
 namespace ReviewsAPI.Services;
 
-public class RatingService: IRatingService
+public class RatingService : IRatingService
 {
     private readonly IRatingRepository _ratingRepository;
 
@@ -24,11 +24,8 @@ public class RatingService: IRatingService
     {
         var actualRatings = await _ratingRepository.GetRatingsByReviewIdAsync(entity.ReviewId);
 
-        if (actualRatings.Any(x => x.UserId.Equals(userId)))
-        {
-            return null;
-        }
-        
+        if (actualRatings.Any(x => x.UserId.Equals(userId))) return null;
+
         var rating = new Rating
         {
             Id = Guid.NewGuid(),
@@ -67,9 +64,9 @@ public class RatingService: IRatingService
         var ratings = await _ratingRepository.GetRatingsByReviewIdAsync(reviewId);
 
         if (ratings is null || !ratings.Any()) return null;
-        
+
         var avgRating = Math.Round(ratings.Average(x => x.Value), 2);
-        
+
         return avgRating;
     }
 }

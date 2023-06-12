@@ -1,5 +1,4 @@
-﻿using AuthAPI.Dto;
-using AuthAPI.Dto.Users;
+﻿using AuthAPI.Dto.Users;
 using AuthAPI.Services.Interfaces;
 using Core.Entities.Models;
 using Core.Enumerations;
@@ -48,9 +47,9 @@ public class UserService : IUserService
         return UserDto.UserToDto(user);
     }
 
-    public async Task<UserDto> UpdateAsync(Guid id, UserUpdateDto entity)
+    public async Task<UserDto> UpdateAsync(Guid userId, UserUpdateDto entity)
     {
-        var oldUserData = await _userRepository.GetByIdAsync(id);
+        var oldUserData = await _userRepository.GetByIdAsync(userId);
 
         var user = new User
         {
@@ -64,14 +63,14 @@ public class UserService : IUserService
             CreatedAt = oldUserData.CreatedAt
         };
 
-        await _userRepository.UpdateAsync(id, user);
+        await _userRepository.UpdateAsync(userId, user);
 
         return UserDto.UserToDto(user);
     }
 
-    public async Task<UserDto> ChangePassword(Guid id, UserChangePasswordDto entity)
+    public async Task<UserDto> ChangePassword(Guid userId, UserChangePasswordDto entity)
     {
-        var oldUserData = await _userRepository.GetByIdAsync(id);
+        var oldUserData = await _userRepository.GetByIdAsync(userId);
 
         var hash = _passwordService.HashPassword(entity.NewPassword, out var salt);
 
@@ -87,14 +86,14 @@ public class UserService : IUserService
             CreatedAt = oldUserData.CreatedAt
         };
 
-        await _userRepository.UpdateAsync(id, user);
+        await _userRepository.UpdateAsync(userId, user);
 
         return UserDto.UserToDto(user);
     }
 
-    public async Task<UserDto> ChangeRole(Guid id, Role role)
+    public async Task<UserDto> ChangeRole(Guid userId, Role role)
     {
-        var oldUserData = await _userRepository.GetByIdAsync(id);
+        var oldUserData = await _userRepository.GetByIdAsync(userId);
 
         var user = new User
         {
@@ -108,7 +107,7 @@ public class UserService : IUserService
             CreatedAt = oldUserData.CreatedAt
         };
 
-        await _userRepository.UpdateAsync(id, user);
+        await _userRepository.UpdateAsync(userId, user);
 
         return UserDto.UserToDto(user);
     }
@@ -126,7 +125,7 @@ public class UserService : IUserService
         return usersDto;
     }
 
-    public async Task<UserDto?> GetByIdAsync(Guid id)
+    public async Task<UserDto> GetByIdAsync(Guid id)
     {
         var user = await _userRepository.GetByIdAsync(id);
         return user is null ? null : UserDto.UserToDto(user);

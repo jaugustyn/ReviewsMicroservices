@@ -23,10 +23,10 @@ public class CommentsController : ControllerBase
         return Ok(await _commentService.GetAllAsync());
     }
 
-    [HttpGet("{id:guid}")]
-    public async Task<ActionResult<CommentDto>> GetComment(Guid id)
+    [HttpGet("{commentId:guid}")]
+    public async Task<ActionResult<CommentDto>> GetComment(Guid commentId)
     {
-        var comment = await _commentService.GetByIdAsync(id);
+        var comment = await _commentService.GetByIdAsync(commentId);
         if (comment == null) return NotFound();
         return Ok(comment);
     }
@@ -51,41 +51,41 @@ public class CommentsController : ControllerBase
 
         var newComment = await _commentService.CreateAsync(userId, commentCreateDto);
 
-        return CreatedAtAction(nameof(GetComment), new {id = newComment.Id}, newComment);
+        return CreatedAtAction(nameof(GetComment), new {commentId = newComment.Id}, newComment);
     }
 
-    [HttpPut("{id:guid}")]
+    [HttpPut("{commentId:guid}")]
     [Authorize]
-    public async Task<IActionResult> PutComment(Guid id, CommentUpdateDto commentUpdateDto)
+    public async Task<IActionResult> PutComment(Guid commentId, CommentUpdateDto commentUpdateDto)
     {
         var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
         var role = User.FindFirstValue(ClaimTypes.Role);
 
-        var comment = await _commentService.GetByIdAsync(id);
+        var comment = await _commentService.GetByIdAsync(commentId);
 
         if (comment == null) return NotFound();
         if (!comment.UserId.Equals(userId) && role != "Administrator")
             return Unauthorized(new {error_message = "The comment does not belong to this user"});
 
-        await _commentService.UpdateAsync(id, commentUpdateDto);
+        await _commentService.UpdateAsync(commentId, commentUpdateDto);
 
         return NoContent();
     }
 
-    [HttpDelete("{id:guid}")]
+    [HttpDelete("{commentId:guid}")]
     [Authorize]
-    public async Task<IActionResult> DeleteComment(Guid id)
+    public async Task<IActionResult> DeleteComment(Guid commentId)
     {
         var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
         var role = User.FindFirstValue(ClaimTypes.Role);
 
-        var comment = await _commentService.GetByIdAsync(id);
+        var comment = await _commentService.GetByIdAsync(commentId);
 
         if (comment == null) return NotFound();
         if (!comment.UserId.Equals(userId) && role != "Administrator")
             return Unauthorized(new {error_message = "The comment does not belong to this user"});
 
-        await _commentService.DeleteAsync(id);
+        await _commentService.DeleteAsync(commentId);
 
         return NoContent();
     }

@@ -1,8 +1,5 @@
-﻿using AuthAPI.Dto;
-using AuthAPI.Dto.Users;
-using AuthAPI.Services;
+﻿using AuthAPI.Dto.Users;
 using AuthAPI.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthAPI.Controllers;
@@ -19,12 +16,11 @@ public class PasswordController : ControllerBase
     }
 
     [HttpPut("change")]
-    [Authorize(Policy = "Bearer")]
-    public async Task<IActionResult> ChangePassword(Guid id, [FromBody] UserChangePasswordDto dto)
+    public async Task<IActionResult> ChangePassword(Guid userId, [FromBody] UserChangePasswordDto dto)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        var changed = await _accountService.ChangePassword(id, dto);
+        var changed = await _accountService.ChangePassword(userId, dto);
 
         if (changed is null) return Conflict(new {error_message = "Cannot change password"});
 
@@ -32,9 +28,9 @@ public class PasswordController : ControllerBase
     }
 
     [HttpPost("recover")]
-    [Authorize(Policy = "Bearer")]
-    public async Task<IActionResult> Recover(Guid id)
+    public Task<IActionResult> Recover(Guid userId)
     {
-        return Ok();
+        // Requires email service
+        return Task.FromResult<IActionResult>(Ok());
     }
 }

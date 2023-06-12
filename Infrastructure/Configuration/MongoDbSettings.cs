@@ -1,8 +1,6 @@
-﻿using Infrastructure.Data;
+﻿namespace Infrastructure.Configuration;
 
-namespace Infrastructure.Configuration;
-
-public class MongoDbSettings: IMongoDbSettings
+public class MongoDbSettings : IMongoDbSettings
 {
     public string DatabaseName { get; set; }
     public string ConnectionString { get; set; }

@@ -4,14 +4,14 @@ services:
   nginx:
     image: nginx:alpine
     ports:
-        - 80:80
-        - 443:443
+      - "80:80"
+      - "443:443"
     volumes:
-        - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
-        - commentsapi
-        - reviewsapi
-        - authapi
+      - commentsapi
+      - reviewsapi
+      - authapi
   
   rabbitmq:
     image: rabbitmq:management
@@ -35,7 +35,7 @@ services:
       dockerfile: AuthAPI/Dockerfile
     depends_on:
       - mongo_db_review
-        
+  
   reviewsapi:
     image: ${DOCKER_REGISTRY-}reviewsapi
     build:
@@ -59,7 +59,7 @@ services:
       - rabbitmq
     links:
       - rabbitmq
-        
+  
   mongo_db_auth:
     container_name: reviews_db_container_auth
     image: mongo:latest

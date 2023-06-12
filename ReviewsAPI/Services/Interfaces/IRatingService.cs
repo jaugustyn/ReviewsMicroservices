@@ -1,6 +1,6 @@
 ﻿using ReviewsAPI.Dto.Rating;
 
-namespace ReviewsAPI.Services;
+namespace ReviewsAPI.Services.Interfaces;
 
 public interface IRatingService
 {
@@ -8,6 +8,6 @@ public interface IRatingService
     Task<RatingDto> CreateAsync(Guid userId, RatingCreateDto entity);
     Task UpdateAsync(Guid ratingId, RatingUpdateDto entity);
     Task DeleteAsync(Guid ratingId);
-    
+
     Task<double?> GetRatingsByReviewIdAsync(Guid reviewId);
 }

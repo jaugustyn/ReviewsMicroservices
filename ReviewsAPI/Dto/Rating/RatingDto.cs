@@ -7,10 +7,8 @@ public class RatingDto
     public Guid Id { get; init; }
     public Guid ReviewId { get; init; }
     public Guid UserId { get; init; }
-    
-    [Range(0,5)]
     public int Value { get; init; }
-    
+
     public static RatingDto RatingToDto(Core.Entities.Models.Rating rating)
     {
         return new RatingDto

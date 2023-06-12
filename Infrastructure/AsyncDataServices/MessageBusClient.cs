@@ -16,7 +16,7 @@ public abstract class MessageBusClient
         var factory = new ConnectionFactory
         {
             Uri = new Uri("amqp://guest:guest@rabbitmq:5672/"),
-            AutomaticRecoveryEnabled = true,
+            AutomaticRecoveryEnabled = true
         };
 
         try
@@ -28,7 +28,7 @@ public abstract class MessageBusClient
 
             Console.WriteLine("--> Connected to MessageBus");
         }
-        catch (RabbitMQ.Client.Exceptions.BrokerUnreachableException ex) 
+        catch (RabbitMQ.Client.Exceptions.BrokerUnreachableException ex)
         {
             Console.WriteLine($"--> Connection failed: {ex.Message}, retrying in 2s...");
             Thread.Sleep(2000);

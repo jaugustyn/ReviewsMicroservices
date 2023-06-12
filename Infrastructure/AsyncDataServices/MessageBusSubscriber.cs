@@ -16,7 +16,7 @@ public abstract class MessageBusSubscriber : BackgroundService
         var factory = new ConnectionFactory
         {
             Uri = new Uri("amqp://guest:guest@rabbitmq:5672/"),
-            AutomaticRecoveryEnabled = true,
+            AutomaticRecoveryEnabled = true
         };
 
         try

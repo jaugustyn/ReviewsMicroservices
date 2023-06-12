@@ -7,7 +7,7 @@ public class JwtSettings
     private const string Section = "JwtSettings";
 
     private readonly IConfiguration _configuration;
-    
+
     public JwtSettings(IConfiguration configuration)
     {
         _configuration = configuration;

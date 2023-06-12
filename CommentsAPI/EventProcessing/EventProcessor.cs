@@ -69,7 +69,7 @@ public class EventProcessor : IEventProcessor
 
         if (userPublishedDto is null) return;
 
-        var commentsList = _commentRepository.GetCommentsByUserIdSync(userPublishedDto.userId);
+        var commentsList = _commentRepository.GetCommentsByUserIdSync(userPublishedDto.UserId);
 
         foreach (var comment in commentsList) _commentRepository.DeleteAsync(comment.Id);
     }

@@ -16,28 +16,27 @@ public class MongoHealthCheck : IHealthCheck
         MongoClient = new MongoClient(configuration.Value.ConnectionString);
         Db = MongoClient.GetDatabase(configuration.Value.DatabaseName);
     }
+
     public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
     {
         var healthCheckResultHealthy = await CheckMongoDbConnectionAsync();
-        
-        if (healthCheckResultHealthy)
-        {
-            return HealthCheckResult.Healthy("MongoDB health check success");
-        }
- 
-        return HealthCheckResult.Unhealthy("MongoDB health check failure"); ;
+
+        if (healthCheckResultHealthy) return HealthCheckResult.Healthy("MongoDB health check success");
+
+        return HealthCheckResult.Unhealthy("MongoDB health check failure");
     }
+
     private async Task<bool> CheckMongoDbConnectionAsync()
     {
         try
         {
-            await Db.RunCommandAsync((Command<BsonDocument>)"{ping:1}");
+            await Db.RunCommandAsync((Command<BsonDocument>) "{ping:1}");
         }
         catch (Exception)
         {
             return false;
         }
- 
+
         return true;
     }
 }

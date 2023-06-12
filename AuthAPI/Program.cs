@@ -1,4 +1,3 @@
-using System.Text.Json.Serialization;
 using AuthAPI.AsyncDataService;
 using AuthAPI.Services;
 using AuthAPI.Services.Interfaces;
@@ -47,7 +46,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    
+
     // Seed database
     SeedDatabase<User>.Seed(app);
 }

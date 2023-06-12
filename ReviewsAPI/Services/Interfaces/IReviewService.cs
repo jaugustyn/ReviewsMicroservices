@@ -1,6 +1,6 @@
 ﻿using ReviewsAPI.Dto.Review;
 
-namespace ReviewsAPI.Services;
+namespace ReviewsAPI.Services.Interfaces;
 
 public interface IReviewService
 {

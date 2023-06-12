@@ -30,7 +30,7 @@ builder.Services.ConfigureMongo(builder.Configuration);
 builder.Services.AddSingleton<IMongoDbContext, MongoDbContext>();
 builder.Services.AddTransient<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<ICommentService, CommentService>();
-builder.Services.AddTransient<IEventProcessor, EventProcessor>(); 
+builder.Services.AddTransient<IEventProcessor, EventProcessor>();
 
 // DataService
 builder.Services.AddHostedService<MessageBusCommentSubscriber>();
@@ -42,7 +42,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    
+
     // Seed database
     SeedDatabase<Comment>.Seed(app);
 }

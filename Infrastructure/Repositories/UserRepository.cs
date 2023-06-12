@@ -9,6 +9,7 @@ public class UserRepository : GenericRepository<User>, IUserRepository
 {
     private readonly FilterDefinitionBuilder<User> _filterBuilder = Builders<User>.Filter;
     private readonly IMongoCollection<User> _collection;
+
     public UserRepository(IMongoDbContext mongoContext) : base(mongoContext)
     {
         _collection = mongoContext.Users;

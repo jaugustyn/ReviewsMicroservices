@@ -1,11 +1,9 @@
 ﻿using System.Security.Claims;
-using Infrastructure.AsyncDataServices.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ReviewsAPI.AsyncDataService;
 using ReviewsAPI.Dto.Rating;
 using ReviewsAPI.Dto.Review;
-using ReviewsAPI.Services;
+using ReviewsAPI.Services.Interfaces;
 
 namespace ReviewsAPI.Controllers;
 
@@ -24,12 +22,12 @@ public class RatingsController : ControllerBase
     public async Task<ActionResult<IEnumerable<RatingDto>>> GetReviewAverageRating(Guid reviewId)
     {
         var avgRating = await _ratingService.GetRatingsByReviewIdAsync(reviewId);
-        if (avgRating is null) 
+        if (avgRating is null)
             return NotFound(new {error_message = "This review has no ratings."});
 
         return Ok(new {rating = avgRating});
     }
-    
+
     [HttpPost]
     [Authorize]
     public async Task<ActionResult<ReviewDto>> AddRating(RatingCreateDto ratingCreateDto)
@@ -40,7 +38,7 @@ public class RatingsController : ControllerBase
 
         if (newRating is null)
             return Conflict(new {error_message = "You cannot rate single review multiple times."});
-        
+
         return Ok(newRating);
     }
 
@@ -54,7 +52,7 @@ public class RatingsController : ControllerBase
         var review = await _ratingService.GetByIdAsync(ratingId);
 
         if (review is null) return NotFound();
-        
+
         if (!review.UserId.Equals(userId) && role != "Administrator")
             return Unauthorized(new {error_message = "The rating does not belong to this user."});
 
