@@ -5,8 +5,10 @@ namespace AuthAPI.Dto.Auth;
 
 public class AuthResponse
 {
-    public string Email { get; set; }
     public bool IsAuthenticated { get; set; }
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string Email { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string Message { get; set; }
