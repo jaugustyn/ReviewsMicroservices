@@ -1,9 +1,7 @@
 using System.Security.Claims;
 using AuthAPI.AsyncDataService;
-using AuthAPI.Dto;
 using AuthAPI.Dto.Auth;
 using AuthAPI.Dto.Users;
-using AuthAPI.Services;
 using AuthAPI.Services.Interfaces;
 using Core.Enumerations;
 using Infrastructure.AsyncDataServices.Dto;
@@ -31,12 +29,12 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] UserLoginDto dto)
     {
-        if (!ModelState.IsValid) 
+        if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
         var loginResult = await _accountService.Login(dto);
 
-        if (!loginResult.IsAuthenticated) 
+        if (!loginResult.IsAuthenticated)
             return Unauthorized(new {error_message = loginResult.Message});
 
         return Ok(loginResult);
@@ -46,12 +44,12 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] UserCreateDto user)
     {
-        if (!ModelState.IsValid) 
+        if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
         var newUser = await _accountService.Register(user);
 
-        if (newUser is null) 
+        if (newUser is null)
             return Conflict(new {error_message = "Email is already in use."});
 
         return Ok(newUser);
@@ -60,12 +58,12 @@ public class AuthController : ControllerBase
     [HttpPost("token/refresh")]
     public async Task<IActionResult> Refresh(TokenRequestModel token)
     {
-        if (token is null) 
+        if (token is null)
             return BadRequest(new {error_message = "Invalid client request"});
 
         var refreshResult = await _accountService.RefreshToken(token);
 
-        if (refreshResult is null) 
+        if (refreshResult is null)
             return BadRequest(new {error_message = refreshResult.Message});
 
         return Ok(refreshResult);
@@ -77,10 +75,10 @@ public class AuthController : ControllerBase
     {
         var isRevoked = await _accountService.RevokeToken(token);
 
-        if (!isRevoked) 
+        if (!isRevoked)
             return BadRequest(new {error_message = "Token expired."});
 
-        return Ok(new {error_message = "Token revoked."});
+        return Ok(new {message = "Token revoked."});
     }
 
     [HttpGet("currentUser")]
@@ -100,15 +98,15 @@ public class AuthController : ControllerBase
     {
         var user = await _userService.GetUserByEmailAsync(email);
 
-        if (user is null) 
+        if (user is null)
             return NotFound(new {error_message = "User does not exist"});
 
         if (!Enum.IsDefined(typeof(Role), role))
             return BadRequest(new {error_message = "Role '{role}' does not exist"});
 
         var changed = await _userService.ChangeRole(user.Id, role);
-        
-        if (changed is null) 
+
+        if (changed is null)
             return Conflict(new {error_message = "Cannot change the role."});
 
         return Ok(changed);
@@ -119,15 +117,10 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> DeleteAccount()
     {
         var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-    
+
         await _userService.DeleteAsync(userId);
-        
-        var publishDeleteUser = new UserDeletedPublisherDto()
-        {
-            userId = userId,
-            Event = "User_Deleted"
-        };
-        
+        var publishDeleteUser = new UserDeletedPublisherDto(userId, "User_Deleted");
+
         try
         {
             _messageBusClient.PublishUserDeleteEvent(publishDeleteUser);
@@ -136,26 +129,22 @@ public class AuthController : ControllerBase
         {
             Console.WriteLine($"--> Could not send asynchronously: {ex.Message}");
         }
-        
+
         return Ok();
     }
-    
+
     [HttpDelete("DeleteUser")]
     [Authorize]
     public async Task<IActionResult> DeleteUser(Guid userId)
     {
         var role = User.FindFirstValue(ClaimTypes.Role);
-    
+
         if (role != "Administrator") return Unauthorized("You are not an admin");
-    
+
         await _userService.DeleteAsync(userId);
-        
-        var publishDeleteUser = new UserDeletedPublisherDto()
-        {
-            userId = userId,
-            Event = "User_Deleted"
-        };
-        
+
+        var publishDeleteUser = new UserDeletedPublisherDto(userId, "User_Deleted");
+
         try
         {
             _messageBusClient.PublishUserDeleteEvent(publishDeleteUser);
@@ -164,7 +153,7 @@ public class AuthController : ControllerBase
         {
             Console.WriteLine($"--> Could not send asynchronously: {ex.Message}");
         }
-        
+
         return Ok();
     }
 }
