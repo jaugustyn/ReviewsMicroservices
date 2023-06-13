@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
@@ -10,7 +6,7 @@ using Moq;
 using ReviewsAPI.AsyncDataService;
 using ReviewsAPI.Controllers;
 using ReviewsAPI.Dto.Review;
-using ReviewsAPI.Services;
+using ReviewsAPI.Services.Interfaces;
 
 namespace Tests.Controllers;
 

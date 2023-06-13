@@ -1,9 +1,7 @@
 ﻿using AuthAPI.AsyncDataService;
 using AuthAPI.Controllers;
-using AuthAPI.Dto;
 using AuthAPI.Dto.Auth;
 using AuthAPI.Dto.Users;
-using AuthAPI.Services;
 using AuthAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
