@@ -12,10 +12,12 @@ namespace ReviewsAPI.Controllers;
 public class RatingsController : ControllerBase
 {
     private readonly IRatingService _ratingService;
+    private readonly IReviewService _reviewService;
 
-    public RatingsController(IRatingService ratingService)
+    public RatingsController(IRatingService ratingService, IReviewService reviewService)
     {
         _ratingService = ratingService;
+        _reviewService = reviewService;
     }
 
     [HttpGet("{reviewId:Guid}")]
@@ -30,9 +32,13 @@ public class RatingsController : ControllerBase
 
     [HttpPost]
     [Authorize]
-    public async Task<ActionResult<ReviewDto>> AddRating(RatingCreateDto ratingCreateDto)
+    public async Task<ActionResult<ReviewDto>> CreateRating(RatingCreateDto ratingCreateDto)
     {
         var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+        var checkReview = _reviewService.GetByIdAsync(ratingCreateDto.ReviewId);
+        if (checkReview is null) 
+            return NotFound(new {error_message = "Review not found."});
 
         var newRating = await _ratingService.CreateAsync(userId, ratingCreateDto);
 
@@ -49,11 +55,11 @@ public class RatingsController : ControllerBase
         var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
         var role = User.FindFirstValue(ClaimTypes.Role);
 
-        var review = await _ratingService.GetByIdAsync(ratingId);
+        var rating = await _ratingService.GetByIdAsync(ratingId);
 
-        if (review is null) return NotFound();
+        if (rating is null) return NotFound();
 
-        if (!review.UserId.Equals(userId) && role != "Administrator")
+        if (!rating.UserId.Equals(userId) && role != "Administrator")
             return Unauthorized(new {error_message = "The rating does not belong to this user."});
 
         await _ratingService.UpdateAsync(ratingId, ratingUpdateDto);
@@ -68,11 +74,11 @@ public class RatingsController : ControllerBase
         var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
         var role = User.FindFirstValue(ClaimTypes.Role);
 
-        var review = await _ratingService.GetByIdAsync(ratingId);
+        var rating = await _ratingService.GetByIdAsync(ratingId);
 
-        if (review is null) return NotFound();
-        if (!review.UserId.Equals(userId) && role != "Administrator")
-            return Unauthorized(new {error_message = "The review does not belong to this user"});
+        if (rating is null) return NotFound();
+        if (!rating.UserId.Equals(userId) && role != "Administrator")
+            return Unauthorized(new {error_message = "The rating does not belong to this user"});
 
         await _ratingService.DeleteAsync(ratingId);
 
