@@ -61,6 +61,7 @@ public class EventProcessor : IEventProcessor
         var commentsList = _commentRepository.GetCommentsByReviewIdSync(reviewPublishedDto.ReviewId);
 
         foreach (var comment in commentsList) _commentRepository.DeleteAsync(comment.Id);
+        Console.WriteLine("--> Comments deleted.");
     }
 
     private void UserDeleteEvent(string userPublishedMessage)
@@ -72,6 +73,7 @@ public class EventProcessor : IEventProcessor
         var commentsList = _commentRepository.GetCommentsByUserIdSync(userPublishedDto.UserId);
 
         foreach (var comment in commentsList) _commentRepository.DeleteAsync(comment.Id);
+        Console.WriteLine("--> Comments deleted.");
     }
 }
 

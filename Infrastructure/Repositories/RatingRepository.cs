@@ -20,4 +20,15 @@ public class RatingRepository : GenericRepository<Rating>, IRatingRepository
         var filter = _filterBuilder.Eq(x => x.ReviewId, reviewId);
         return await _collection.Find(filter).ToListAsync();
     }
+
+    public IEnumerable<Rating> GetRatingsByReviewIdSync(Guid reviewId)
+    {
+        var filter = _filterBuilder.Eq(x => x.ReviewId, reviewId);
+        return _collection.Find(filter).ToList();
+    }
+    public IEnumerable<Rating> GetRatingsByUserIdSync(Guid userId)
+    {
+        var filter = _filterBuilder.Eq(x => x.UserId, userId);
+        return _collection.Find(filter).ToList();
+    }
 }

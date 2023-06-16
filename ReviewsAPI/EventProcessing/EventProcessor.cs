@@ -7,10 +7,12 @@ namespace ReviewsAPI.EventProcessing;
 public class EventProcessor : IEventProcessor
 {
     private readonly IReviewRepository _reviewRepository;
+    private readonly IRatingRepository _ratingRepository;
 
-    public EventProcessor(IReviewRepository reviewRepository)
+    public EventProcessor(IReviewRepository reviewRepository, IRatingRepository ratingRepository)
     {
         _reviewRepository = reviewRepository;
+        _ratingRepository = ratingRepository;
     }
 
     public void ProcessEvent(string notificationMessage)
@@ -19,6 +21,9 @@ public class EventProcessor : IEventProcessor
 
         switch (eventType)
         {
+            case EventType.ReviewDeleted:
+                ReviewDeleteEvent(notificationMessage);
+                break;
             case EventType.UserDeleted:
                 UserDeleteEvent(notificationMessage);
                 break;
@@ -37,6 +42,9 @@ public class EventProcessor : IEventProcessor
 
         switch (eventType.Event)
         {
+            case "Review_Deleted":
+                Console.WriteLine("--> Review Delete Event Detected");
+                return EventType.ReviewDeleted;
             case "User_Deleted":
                 Console.WriteLine("--> User Delete Event Detected");
                 return EventType.UserDeleted;
@@ -52,14 +60,29 @@ public class EventProcessor : IEventProcessor
 
         if (userPublishedDto is null) return;
 
-        var commentsList = _reviewRepository.GetReviewsByUserIdSync(userPublishedDto.UserId);
+        var reviewsList = _reviewRepository.GetReviewsByUserIdSync(userPublishedDto.UserId);
+        foreach (var review in reviewsList) _reviewRepository.DeleteAsync(review.Id);
+        
+        var ratingsList = _ratingRepository.GetRatingsByUserIdSync(userPublishedDto.UserId);
+        foreach (var rating in ratingsList) _ratingRepository.DeleteAsync(rating.Id);
+    }
+    
+    private void ReviewDeleteEvent(string reviewPublishedMessage)
+    {
+        var reviewPublishedDto = JsonSerializer.Deserialize<ReviewDeletedPublisherDto>(reviewPublishedMessage);
 
-        foreach (var comment in commentsList) _reviewRepository.DeleteAsync(comment.Id);
+        Console.WriteLine("--> reviewPublishedDto check.");
+        if (reviewPublishedDto is null) return;
+
+        var ratingsList = _ratingRepository.GetRatingsByReviewIdSync(reviewPublishedDto.ReviewId);
+        foreach (var rating in ratingsList) _ratingRepository.DeleteAsync(rating.Id);
+        Console.WriteLine("--> Ratings deleted.");
     }
 }
 
 internal enum EventType
 {
+    ReviewDeleted,
     UserDeleted,
     Undetermined
 }
